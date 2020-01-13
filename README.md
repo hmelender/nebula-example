@@ -46,7 +46,7 @@ In your project directory:
 
 *Note that step 5 can usually be done from within your IDE (`fips open`)*
 
-After you've setup Physx, AnyFX and your [environment variables](#set-environment-variables) once, you only need to (5) re-build the project in the future.
+After you've setup Physx, AnyFX and your environment variables once, you only need to (5) re-build the project in the future.
 
 ## How to compile and batch assets
 
