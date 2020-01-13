@@ -1,4 +1,5 @@
 ---
 imports:
      nebula:
-        git: https://github.com/gscept/nebula.git       
+        git: https://github.com/gscept/nebula.git
+        rev: 8367d704
