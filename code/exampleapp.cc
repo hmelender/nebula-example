@@ -251,6 +251,38 @@ ExampleApplication::Run()
     const Ptr<Input::Keyboard>& keyboard = inputServer->GetDefaultKeyboard();
     const Ptr<Input::Mouse>& mouse = inputServer->GetDefaultMouse();
     
+    Graphics::GraphicsEntityId exampleEntity = Graphics::CreateEntity();
+    // Register entity to various graphics contexts.
+    // The template parameters are which contexts that the entity should be registered to.
+    // ModelContext takes care of loading models and also handles transforms for instances of models.
+    // Registering an entity to the ObservableContext will allow cameras to observe the entity (adds the entity to visibility culling system)
+    Graphics::RegisterEntity<ModelContext, ObservableContext>(exampleEntity);
+    // Setup the entitys model instance
+    ModelContext::Setup(exampleEntity, "mdl:system/placeholder.n3", "Examples");
+    // Set the transform of the entity
+    ModelContext::SetTransform(exampleEntity, Math::matrix44::translation(Math::point(0, 0, 0)));
+    // Setup the observable as a model
+    ObservableContext::Setup(exampleEntity, VisibilityEntityType::Model);
+
+    // Example animated entity
+    Graphics::GraphicsEntityId animatedEntity = Graphics::CreateEntity();
+    // The CharacterContext holds skinned, animated entites and takes care of playing animations etc.
+    Graphics::RegisterEntity<ModelContext, ObservableContext, Characters::CharacterContext>(animatedEntity);
+    // create model and move it to the front
+    ModelContext::Setup(animatedEntity, "mdl:Units/Unit_Footman.n3", "Examples");
+    ModelContext::SetTransform(animatedEntity, Math::matrix44::translation(Math::point(5, 0, 0)));
+    ObservableContext::Setup(animatedEntity, VisibilityEntityType::Model);
+    // Setup the character context instance.
+    // nsk3 is the skeleton resource, nax3 is the animation resource. nax3 files can contain multiple animation clips
+    Characters::CharacterContext::Setup(animatedEntity, "ske:Units/Unit_Footman.nsk3", "ani:Units/Unit_Footman.nax3", "Examples");
+    Characters::CharacterContext::PlayClip(animatedEntity, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
+
+    // Create a point light entity
+    Graphics::GraphicsEntityId pointLight = Graphics::CreateEntity();
+    // You can also register to contexts directly
+    Lighting::LightContext::RegisterEntity(pointLight);
+    Lighting::LightContext::SetupPointLight(pointLight, Math::float4(4.5, 0.5, 0.2, 1), 10.0f, Math::matrix44::translation(1, 2, 1), 100.0f, true);
+
     while (run && !inputServer->IsQuitRequested())
     {   
 #if __NEBULA_HTTP__
