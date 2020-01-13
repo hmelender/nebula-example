@@ -18,6 +18,12 @@
         3. Added to PATH
         4. Installed with debugging symbols and binaries
 
+## FIPS
+
+Nebula uses [fips](https://floooh.github.io/fips/docs/getstarted/), which is a wrapper around CMake, as build system.
+
+Visit https://floooh.github.io/fips/docs/getstarted/ for more information.
+
 ## Setup
 
 #### Setup config and toolkit
@@ -26,18 +32,39 @@
 
 #### How to build project
 
+Nebula uses environment variables to find resources such as assets, shaders etc.
+Before building run `fips nebula` verb to set work and toolkit directory registry variables:
+
 In your project directory:
 
-  1. `fips physx build`
-  2. `fips anyfx setup`
-  3. `fips build`
-  4. `fips physx deploy`
+  1. `fips nebula set work {PATH TO PROJECT}`
+  2. `fips nebula set toolkit {PATH TO NEBULA}`
+  3. `fips physx build`
+  4. `fips anyfx setup`
+  5. `fips build`
+  6. `fips physx deploy`
 
-*Note that step 3 can be done from within Visual Studio (`fips open`)*
+*Note that step 5 can usually be done from within your IDE (`fips open`)*
 
-#### Set environment variables
+After you've setup Physx, AnyFX and your [environment variables](#set-environment-variables) once, you only need to (5) re-build the project in the future.
 
-Remember to run `fips nebula` verb to set work and toolkit directory registry variables:
+## How to compile and batch assets
 
-  * `fips nebula set work {PATH}`
-  * `fips nebula set toolkit {PATH}`
+Nebula has its own file formats for meshes, animations, skeletons etc. and most source files needs to be processed before being used.
+
+Toolkit for batching assets is provided externally.
+
+  1. Follow the setup instructions above. Make sure to set the `toolkit` environment variable to the *Nebula repository* and `work` to your project folder that has the *work* folder containing all the asset source files.
+  2. Run `assetexporter` via the terminal.
+
+The asset exporter takes various additional arguments:
+
+  * `-force` will force batch all assets
+  * `-dir` will only batch from within a specific directory (relative to work dir)
+  * `-file` will only export a specific file
+  * `-system` will only export the system folder
+  * `-platform` can be set to `win32` or `linux`. Assumes `win32` as default
+
+## How to run
+
+Either execute `fips run [target]` or run it via your IDE, ex. Visual Studio (remember to set startup project!).
