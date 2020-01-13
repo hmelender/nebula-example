@@ -55,9 +55,9 @@ Nebula has its own file formats for meshes, animations, skeletons etc. and most 
 Toolkit for batching assets is provided externally.
 
   1. Follow the setup instructions above. Make sure to set the `toolkit` environment variable to the *Nebula repository* and `work` to your project folder that has the *work* folder containing all the asset source files.
-  2. Run `assetexporter` via the terminal.
+  2. Run `assetbatcher` via the terminal.
 
-The asset exporter takes various additional arguments:
+The asset batcher takes various additional arguments:
 
   * `-force` will force batch all assets
   * `-dir` will only batch from within a specific directory (relative to work dir)
