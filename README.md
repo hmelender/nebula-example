@@ -26,9 +26,10 @@ Visit https://floooh.github.io/fips/docs/getstarted/ for more information.
 
 ## Setup
 
-#### Setup config and toolkit
+#### First time setup
 
 1. `./fips set config vulkan-win64-vstudio-debug` in your project directory
+2. `./fips fetch` to fetch all dependenciescd ..
 
 #### How to build project
 
@@ -39,7 +40,7 @@ In your project directory:
 
   1. `fips nebula set work {PATH TO PROJECT}`
   2. `fips nebula set toolkit {PATH TO NEBULA}`
-  3. `fips physx build`
+  3. `fips physx buildf  `
   4. `fips anyfx setup`
   5. `fips build`
   6. `fips physx deploy`
