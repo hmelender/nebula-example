@@ -40,7 +40,7 @@ In your project directory:
 
   1. `fips nebula set work {PATH TO PROJECT}`
   2. `fips nebula set toolkit {PATH TO NEBULA}`
-  3. `fips physx buildf  `
+  3. `fips physx build`
   4. `fips anyfx setup`
   5. `fips build`
   6. `fips physx deploy`
