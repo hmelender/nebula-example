@@ -2,4 +2,4 @@
 imports:
      nebula:
         git: https://github.com/gscept/nebula.git
-        rev: 8367d704
+        rev: 559c3b8
