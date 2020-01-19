@@ -297,15 +297,6 @@ ExampleApplication::Run()
         
 		// put game code which doesn't need visibility data or animation here
 
-        Graphics::DeregisterEntity<ModelContext, ObservableContext, Characters::CharacterContext>(animatedEntity);
-        Graphics::DestroyEntity(animatedEntity);
-        
-        animatedEntity = Graphics::CreateEntity();
-        Graphics::RegisterEntity<ModelContext, ObservableContext, Characters::CharacterContext>(animatedEntity);
-        ModelContext::Setup(animatedEntity, "mdl:Units/Unit_Footman.n3", "Examples");
-        ModelContext::SetTransform(animatedEntity, Math::matrix44::translation(Math::point(5, 0, 0)));
-        ObservableContext::Setup(animatedEntity, VisibilityEntityType::Model);
-
         this->gfxServer->BeforeViews();
         
 		this->RenderUI();             
