@@ -26,9 +26,10 @@ Visit https://floooh.github.io/fips/docs/getstarted/ for more information.
 
 ## Setup
 
-#### Setup config and toolkit
+#### First time setup
 
 1. `./fips set config vulkan-win64-vstudio-debug` in your project directory
+2. `./fips fetch` to fetch all dependenciescd ..
 
 #### How to build project
 
@@ -46,7 +47,7 @@ In your project directory:
 
 *Note that step 5 can usually be done from within your IDE (`fips open`)*
 
-After you've setup Physx, AnyFX and your [environment variables](#set-environment-variables) once, you only need to (5) re-build the project in the future.
+After you've setup Physx, AnyFX and your environment variables once, you only need to (5) re-build the project in the future.
 
 ## How to compile and batch assets
 
@@ -55,9 +56,9 @@ Nebula has its own file formats for meshes, animations, skeletons etc. and most 
 Toolkit for batching assets is provided externally.
 
   1. Follow the setup instructions above. Make sure to set the `toolkit` environment variable to the *Nebula repository* and `work` to your project folder that has the *work* folder containing all the asset source files.
-  2. Run `assetexporter` via the terminal.
+  2. Run `assetbatcher` via the terminal.
 
-The asset exporter takes various additional arguments:
+The asset batcher takes various additional arguments:
 
   * `-force` will force batch all assets
   * `-dir` will only batch from within a specific directory (relative to work dir)

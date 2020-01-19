@@ -280,12 +280,6 @@ ExampleApplication::Run()
     Characters::CharacterContext::Setup(animatedEntity, "ske:Units/Unit_Footman.nsk3", "ani:Units/Unit_Footman.nax3", "Examples");
     Characters::CharacterContext::PlayClip(animatedEntity, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
 
-    // Create a point light entity
-    Graphics::GraphicsEntityId pointLight = Graphics::CreateEntity();
-    // You can also register to contexts directly
-    Lighting::LightContext::RegisterEntity(pointLight);
-    Lighting::LightContext::SetupPointLight(pointLight, Math::float4(4.5, 0.5, 0.2, 1), 10.0f, Math::matrix44::translation(1, 2, 1), 100.0f, true);
-
     while (run && !inputServer->IsQuitRequested())
     {   
 #if __NEBULA_HTTP__

@@ -10,3 +10,4 @@ fips-generators/*.pyc
 /fips-files/generators/**/*.pyc
 export_win32/*
 export_linux/*
+work/*
