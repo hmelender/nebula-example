@@ -32,6 +32,9 @@
 #include "io/fswrapper.h"
 #include "system/nebulasettings.h"
 
+// My includes
+#include "entity.h"
+
 
 #ifdef __WIN32__
 #include <shellapi.h>
@@ -147,8 +150,8 @@ ExampleApplication::Open()
         this->inputServer->Open();
         this->gfxServer->Open();
 
-        SizeT width = this->GetCmdLineArgs().GetInt("-w", 1680);
-        SizeT height = this->GetCmdLineArgs().GetInt("-h", 1050);
+        SizeT width = this->GetCmdLineArgs().GetInt("-w", 1024);
+        SizeT height = this->GetCmdLineArgs().GetInt("-h", 768);
 
         CoreGraphics::WindowCreateInfo wndInfo =
         {
@@ -279,6 +282,39 @@ ExampleApplication::Run()
     // nsk3 is the skeleton resource, nax3 is the animation resource. nax3 files can contain multiple animation clips
     Characters::CharacterContext::Setup(animatedEntity, "ske:Units/Unit_Footman.nsk3", "ani:Units/Unit_Footman.nax3", "Examples");
     Characters::CharacterContext::PlayClip(animatedEntity, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
+
+	// Other entities
+	/*
+	Graphics::GraphicsEntityId groundEntity = Graphics::CreateEntity();
+	Graphics::RegisterEntity<ModelContext, ObservableContext>(groundEntity);
+	ModelContext::Setup(groundEntity, "mdl:environment/Groundplane.n3", "Examples");
+	ModelContext::SetTransform(groundEntity, Math::matrix44::translation(Math::point(0, 0, 0)));
+	ObservableContext::Setup(groundEntity, VisibilityEntityType::Model);
+
+
+	Graphics::GraphicsEntityId treeEntity = Graphics::CreateEntity();
+	Graphics::RegisterEntity<ModelContext, ObservableContext>(treeEntity);
+	ModelContext::Setup(treeEntity, "mdl:Vegetation/Trees_01.n3", "Examples");
+	ModelContext::SetTransform(treeEntity, Math::matrix44::translation(Math::point(0, 0, 0)));
+	ObservableContext::Setup(treeEntity, VisibilityEntityType::Model);
+	
+
+	Graphics::GraphicsEntityId catapultEntity = Graphics::CreateEntity();
+	Graphics::RegisterEntity<ModelContext, ObservableContext>(catapultEntity);
+	ModelContext::Setup(catapultEntity, "mdl:Units/Unit_Catapult.n3", "Examples");
+	ModelContext::SetTransform(catapultEntity, Math::matrix44::translation(Math::point(0, 0, 0)));
+	ObservableContext::Setup(catapultEntity, VisibilityEntityType::Model);
+	*/
+
+	auto en1 = Game::Entity::Create(Math::point(0, 0, 0));
+	Game::Entity::Get(en1).LoadModel("mdl:environment/Groundplane.n3", "Examples");
+
+	auto en2 = Game::Entity::Create(Math::point(0, 0, 0));
+	Game::Entity::Get(en2).LoadModel("mdl:Vegetation/Trees_01.n3", "Examples");
+
+	auto en3 = Game::Entity::Create(Math::point(0, 0, 0));
+	Game::Entity::Get(en3).LoadModel("mdl:Units/Unit_Catapult.n3", "Examples");
+
 
     // Create a point light entity
     Graphics::GraphicsEntityId pointLight = Graphics::CreateEntity();
