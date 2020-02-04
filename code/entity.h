@@ -1,57 +1,33 @@
 #pragma once
-#include "stdneb.h"
-#include "graphics/graphicsserver.h"
-#include "graphics/graphicsentity.h"
-#include "models/model.h"
-#include "models/modelcontext.h"
-#include "visibility/visibilitycontext.h"
 #include "core/refcounted.h"
-#include "util/stringatom.h"
-#include "resources/resourceid.h"
+#include "util/array.h"
 #include "util/hashtable.h"
-#include "ids/idpool.h"
+#include "util/variant.h"
+#include "util/keyvaluepair.h"
+#include "util/stringatom.h"
+#include "basecomponent.h"
 
-#include "gameentity.h"
-
-namespace Game {
-
-	using Util::StringAtom;
+namespace MyApp
+{
+	using Core::RefCounted;
+	using Util::Array;
 	using Util::HashTable;
-	using Models::ModelContext;
-	using Visibility::ObservableContext;
-	using Visibility::VisibilityEntityType;
-	using Ids::IdPool;
+	using Util::Variant;
+	using Util::StringAtom;
 
-	class Entity
+	class Entity: RefCounted
 	{
 	private:
-		static IdPool s_IdPool;
-		static HashTable<GameEntityId, Entity*> s_Entities;
 
-		GameEntityId m_Id;
-		Graphics::GraphicsEntityId m_GraphicsId;
-		Math::matrix44 m_Transform;
-
-		bool m_Enabled;
-
+		Array<BaseComponent> m_Components;
+		HashTable<StringAtom, Variant> m_Variables;
 
 	public:
-		GameEntityId& id;
-
+		Entity();
+		void Init();
+		void Update();
+		void Shutdown();
 	private:
-		virtual void Update();
-		Entity(GameEntityId id);
-	public:
-		static GameEntityId& Create(const Math::point& position);
-		static Entity& Get(GameEntityId& id);
-		static void UpdateAll();
-
-		virtual ~Entity();
-		void LoadModel(const Resources::ResourceName& uri, const StringAtom& tag);
-		void SetActive(BOOL enabled);
-		void Destroy();
 
 	};
-
 }
-
