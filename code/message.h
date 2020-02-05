@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Game
+namespace MyApp
 {
 	class IMessageHandler
 	{

@@ -6,21 +6,35 @@ MyApp::Entity::Entity()
 
 void MyApp::Entity::Init()
 {
-	for (BaseComponent& c: m_Components) {
+	for (Component& c: m_Components) {
 		c.Init();
 	}
 }
 
 void MyApp::Entity::Update()
 {
-	for (BaseComponent& c : m_Components) {
+	for (Component& c : m_Components) {
 		c.Update();
 	}
 }
 
 void MyApp::Entity::Shutdown()
 {
-	for (BaseComponent& c : m_Components) {
+	for (Component& c : m_Components) {
 		c.Shutdown();
 	}
 }
+
+void MyApp::Entity::AddComponent(Component& component)
+{
+	component.m_Entity = this;
+	m_Components.Append(component);
+}
+
+void MyApp::Entity::ReceiveMessage(const Message& message)
+{
+	for (Component& c : m_Components) {
+		c.ReceiveMessage(message);
+	}
+}
+

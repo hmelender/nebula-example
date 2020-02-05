@@ -1,4 +1,5 @@
 #pragma once
+#include "entity.h"
 
 namespace MyApp
 {
@@ -9,6 +10,11 @@ namespace MyApp
 		EntityManager();
 	public:
 		static EntityManager& GetInstance();
+		Entity& CreateEntity();
+		void Init();
+		void Update();
+		void Shutdown();
+
 	private:
 
 	};
