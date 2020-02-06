@@ -10,7 +10,7 @@ namespace MyApp
 	class TransformComponent : Component
 	{
 	private:
-		matrix44 m_Transform;
+		matrix44 m_Matrix;
 	public:
 		TransformComponent();
 		void Init();

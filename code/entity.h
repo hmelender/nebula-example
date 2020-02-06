@@ -6,6 +6,8 @@
 #include "util/variant.h"
 #include "util/keyvaluepair.h"
 #include "util/stringatom.h"
+#include "math/matrix44.h"
+#include "math/float4.h"
 #include "component.h"
 #include "message.h"
 
@@ -16,6 +18,8 @@ namespace MyApp
 	using Util::HashTable;
 	using Util::Variant;
 	using Util::StringAtom;
+	using Math::matrix44;
+	using Math::float4;
 
 	class Entity: RefCounted, IMessageHandler
 	{
@@ -41,10 +45,26 @@ namespace MyApp
 			return true;
 		};
 
-		template <typename T>
-		T& GetVariable(const StringAtom& name) {
+		Variant& GetVariable(const StringAtom& name) {
+			return m_Variables[name];
+		};
+
+		/*
+		template <typename TYPE>
+		TYPE& GetVariable(const StringAtom& name) {
 			return m_Variables[name].Get();
 		};
+
+		template <>
+		const matrix44& GetVariable(const StringAtom& name) {
+			return m_Variables[name].GetMatrix44();
+		};
+
+		template <>
+		float4& GetVariable(const StringAtom& name) {
+			return m_Variables[name].GetFloat4();
+		}
+		*/
 
 		template <typename T>
 		void SetVariable(const StringAtom& name, T& value) {
