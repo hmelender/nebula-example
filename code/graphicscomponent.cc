@@ -8,6 +8,7 @@ MyApp::GraphicsComponent::GraphicsComponent()
 void MyApp::GraphicsComponent::Init()
 {
 	m_GraphicsId = Graphics::CreateEntity();
+	m_Entity->RegisterVariable("graphics_id", m_GraphicsId);
 }
 
 void MyApp::GraphicsComponent::Update()

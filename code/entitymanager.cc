@@ -10,7 +10,7 @@ MyApp::EntityManager& MyApp::EntityManager::GetInstance()
 
 MyApp::Entity& MyApp::EntityManager::CreateEntity()
 {
-	Entity::
+
 }
 
 void MyApp::EntityManager::Init()
