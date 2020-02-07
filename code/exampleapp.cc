@@ -306,6 +306,7 @@ ExampleApplication::Run()
 	ObservableContext::Setup(catapultEntity, VisibilityEntityType::Model);
 	*/
 
+	/*
 	auto en1 = Game::Entity::Create(Math::point(0, 0, 0));
 	Game::Entity::Get(en1).LoadModel("mdl:environment/Groundplane.n3", "Examples");
 
@@ -314,6 +315,7 @@ ExampleApplication::Run()
 
 	auto en3 = Game::Entity::Create(Math::point(0, 0, 0));
 	Game::Entity::Get(en3).LoadModel("mdl:Units/Unit_Catapult.n3", "Examples");
+	*/
 
 
     // Create a point light entity

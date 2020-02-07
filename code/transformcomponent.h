@@ -9,7 +9,7 @@ namespace MyApp
 	using Math::matrix44;
 	using Math::quaternion;
 
-	class TransformComponent : Component
+	class TransformComponent : public Component
 	{
 	private:
 		float4 m_Velocity;
@@ -24,6 +24,7 @@ namespace MyApp
 		void Init();
 		void Update();
 		void Shutdown();
+		void ReceiveMessage(const Message& message);
 	};
 
 }

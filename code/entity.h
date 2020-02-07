@@ -21,7 +21,7 @@ namespace MyApp
 	using Math::matrix44;
 	using Math::float4;
 
-	class Entity: RefCounted, IMessageHandler
+	class Entity: public RefCounted, public IMessageHandler
 	{
 	private:
 
@@ -35,6 +35,7 @@ namespace MyApp
 		void Shutdown();
 
 		void AddComponent(Component& component);
+		void CreateComponent(Component::Type componentType);
 
 		template <typename T>
 		bool RegisterVariable(const StringAtom& name, T& value) {
@@ -45,29 +46,13 @@ namespace MyApp
 			return true;
 		};
 
-		Variant& GetVariable(const StringAtom& name) {
-			return m_Variables[name];
-		};
-
-		/*
-		template <typename TYPE>
-		TYPE& GetVariable(const StringAtom& name) {
+		template <typename T>
+		inline T& GetVariable(const StringAtom& name) {
 			return m_Variables[name].Get();
 		};
 
-		template <>
-		const matrix44& GetVariable(const StringAtom& name) {
-			return m_Variables[name].GetMatrix44();
-		};
-
-		template <>
-		float4& GetVariable(const StringAtom& name) {
-			return m_Variables[name].GetFloat4();
-		}
-		*/
-
 		template <typename T>
-		void SetVariable(const StringAtom& name, T& value) {
+		inline void SetVariable(const StringAtom& name, T& value) {
 			m_Variables[name] = value;
 		};
 

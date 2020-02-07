@@ -14,7 +14,7 @@ namespace MyApp
 	using Visibility::ObservableContext;
 	using Visibility::VisibilityEntityType;
 
-	class GraphicsComponent : Component
+	class GraphicsComponent : public Component
 	{
 	private:
 		GraphicsEntityId m_GraphicsId;
@@ -24,6 +24,7 @@ namespace MyApp
 		void Init();
 		void Update();
 		void Shutdown();
+		void ReceiveMessage(const Message& message);
 		void LoadModel(const Resources::ResourceName& uri, const StringAtom& tag);
 	};
 

@@ -8,7 +8,7 @@ namespace MyApp {
 
 	using Core::RefCounted;
 
-	class Component: RefCounted, IMessageHandler
+	class Component: public RefCounted, public IMessageHandler
 	{
 		friend class Entity;
 	protected:
