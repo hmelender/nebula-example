@@ -1,6 +1,6 @@
 #include "component.h"
 
-MyApp::Component::Component()
+hm::Component::Component()
 {
 }
 

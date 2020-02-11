@@ -1,6 +1,6 @@
 #pragma once
 
-namespace MyApp
+namespace hm
 {
 
 	class Message

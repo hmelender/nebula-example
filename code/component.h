@@ -4,7 +4,7 @@
 #include "message.h"
 #include "entity.h"
 
-namespace MyApp {
+namespace hm {
 
 	using Core::RefCounted;
 

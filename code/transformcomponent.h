@@ -4,7 +4,7 @@
 #include "math/quaternion.h"
 #include "component.h"
 
-namespace MyApp
+namespace hm
 {
 	using Math::matrix44;
 	using Math::quaternion;

@@ -1,7 +1,7 @@
 #pragma once
 #include "entity.h"
 
-namespace MyApp
+namespace hm
 {
 	class EntityManager
 	{

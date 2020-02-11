@@ -7,7 +7,7 @@
 #include "visibility/visibilitycontext.h"
 #include "component.h"
 
-namespace MyApp
+namespace hm
 {
 	using Graphics::GraphicsEntityId;
 	using Models::ModelContext;

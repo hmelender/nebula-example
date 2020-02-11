@@ -1,10 +1,10 @@
 #include "transformcomponent.h"
 
-MyApp::TransformComponent::TransformComponent()
+hm::TransformComponent::TransformComponent()
 {
 }
 
-void MyApp::TransformComponent::Init()
+void hm::TransformComponent::Init()
 {
 	m_Position = float4::zerovector();
 	m_Velocity = float4::zerovector();
@@ -19,14 +19,14 @@ void MyApp::TransformComponent::Init()
 	m_Entity->RegisterVariable("transform_matrix", m_Matrix);
 }
 
-void MyApp::TransformComponent::Update()
+void hm::TransformComponent::Update()
 {
 }
 
-void MyApp::TransformComponent::Shutdown()
+void hm::TransformComponent::Shutdown()
 {
 }
 
-void MyApp::TransformComponent::ReceiveMessage(const Message& message)
+void hm::TransformComponent::ReceiveMessage(const Message& message)
 {
 }

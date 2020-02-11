@@ -11,7 +11,7 @@
 #include "component.h"
 #include "message.h"
 
-namespace MyApp
+namespace hm
 {
 	using Core::RefCounted;
 	using Util::Array;
@@ -23,6 +23,7 @@ namespace MyApp
 
 	class Entity: public RefCounted, public IMessageHandler
 	{
+		__DeclareClass(hm::Entity);
 	private:
 
 		Array<Component> m_Components;

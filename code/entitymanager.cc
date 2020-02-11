@@ -1,6 +1,6 @@
 #include "entitymanager.h"
 
-MyApp::EntityManager& MyApp::EntityManager::GetInstance()
+hm::EntityManager& hm::EntityManager::GetInstance()
 {
 	if (s_Instance == nullptr) {
 		s_Instance = new EntityManager();
@@ -8,19 +8,19 @@ MyApp::EntityManager& MyApp::EntityManager::GetInstance()
 	return *s_Instance;
 }
 
-MyApp::Entity& MyApp::EntityManager::CreateEntity()
+hm::Entity& hm::EntityManager::CreateEntity()
 {
 
 }
 
-void MyApp::EntityManager::Init()
+void hm::EntityManager::Init()
 {
 }
 
-void MyApp::EntityManager::Update()
+void hm::EntityManager::Update()
 {
 }
 
-void MyApp::EntityManager::Shutdown()
+void hm::EntityManager::Shutdown()
 {
 }

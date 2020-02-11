@@ -1,29 +1,29 @@
 #include "graphicscomponent.h"
 #include "transformcomponent.h"
 
-MyApp::GraphicsComponent::GraphicsComponent()
+hm::GraphicsComponent::GraphicsComponent()
 {
 }
 
-void MyApp::GraphicsComponent::Init()
+void hm::GraphicsComponent::Init()
 {
 	m_GraphicsId = Graphics::CreateEntity();
 	m_Entity->RegisterVariable("graphics_id", m_GraphicsId);
 }
 
-void MyApp::GraphicsComponent::Update()
+void hm::GraphicsComponent::Update()
 {
 }
 
-void MyApp::GraphicsComponent::Shutdown()
+void hm::GraphicsComponent::Shutdown()
 {
 }
 
-void MyApp::GraphicsComponent::ReceiveMessage(const Message& message)
+void hm::GraphicsComponent::ReceiveMessage(const Message& message)
 {
 }
 
-void MyApp::GraphicsComponent::LoadModel(const Resources::ResourceName& uri, const StringAtom& tag)
+void hm::GraphicsComponent::LoadModel(const Resources::ResourceName& uri, const StringAtom& tag)
 {
 	const matrix44& t = m_Entity->GetVariable<matrix44>("transform_matrix");
 	ModelContext::Setup(m_GraphicsId, uri, tag);
