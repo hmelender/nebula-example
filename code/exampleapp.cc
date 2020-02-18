@@ -36,6 +36,7 @@
 #include "entitymanager.h"
 #include "entity.h"
 #include "graphicscomponent.h"
+#include "transformcomponent.h"
 
 
 #ifdef __WIN32__
@@ -293,6 +294,12 @@ ExampleApplication::Run()
 	entityManager.CreateEntity("trees", "mdl:Vegetation/Trees_01.n3", "Examples");
 	entityManager.CreateEntity("catapult", "mdl:Units/Unit_Catapult.n3", "Examples");
 
+	entityManager.Init();
+
+	hm::Entity& catapult = entityManager.GetEntity("catapult");
+	hm::TransformComponent& catapultTransform = catapult.GetComponent("transform");
+	Math::matrix44 mat = catapult.GetVariable("transform_matrix");
+
 	/*
 	Graphics::GraphicsEntityId groundEntity = Graphics::CreateEntity();
 	Graphics::RegisterEntity<ModelContext, ObservableContext>(groundEntity);
@@ -315,7 +322,7 @@ ExampleApplication::Run()
 	ObservableContext::Setup(catapultEntity, VisibilityEntityType::Model);
 	*/
 
-	entityManager.Init();
+
 
     // Create a point light entity
     Graphics::GraphicsEntityId pointLight = Graphics::CreateEntity();
@@ -350,6 +357,8 @@ ExampleApplication::Run()
         }
         
         // put game code which need visibility data here
+
+		catapultTransform.RotateAxis(hm::TransformComponent::Axis::Y, 0.5f * gfxServer->GetFrameTime());
 
 		entityManager.Update();
 

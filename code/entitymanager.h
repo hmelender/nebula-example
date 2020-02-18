@@ -1,6 +1,7 @@
 #pragma once
 #include "entity.h"
 #include "stdneb.h"
+#include "math/point.h"
 
 namespace hm
 {
@@ -16,6 +17,7 @@ namespace hm
 		static EntityManager& GetInstance();
 		Entity& CreateEntity(const StringAtom& name);
 		Entity& CreateEntity(const StringAtom& name, const Resources::ResourceName& uri, const StringAtom& tag);
+		Entity& CreateEntity(const StringAtom& name, const Resources::ResourceName& uri, const StringAtom& tag, const Math::point& position);
 		Entity& GetEntity(const StringAtom& name);
 		void RemoveEntity(const StringAtom& name);
 		void Init();

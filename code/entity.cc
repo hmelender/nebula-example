@@ -7,16 +7,20 @@ namespace hm
 	__ImplementClass(hm::Entity, 'HMET', Core::RefCounted)
 }
 
-hm::Entity::Entity()
+hm::Entity::Entity() : m_Initialized(false)
 {
-	CreateComponent(Component::Type::TRANSFORM);
 }
 
 void hm::Entity::Init()
 {
+	if (m_Initialized)
+		return;
+
 	for (Component* c: m_Components) {
 		c->Init();
 	}
+
+	m_Initialized = true;
 }
 
 void hm::Entity::Update()
@@ -38,35 +42,31 @@ hm::Component& hm::Entity::CreateComponent(hm::Component::Type componentType)
 	hm::Component* c = nullptr;
 	switch (componentType)
 	{
-	case hm::Component::Type::TRANSFORM:
+	case hm::Component::Type::TRANSFORM: {
 		c = hm::TransformComponent::Create();
-		m_ComponentTable.Add("transform", m_Components.Size());
+		StringAtom atm = StringAtom("transform");
+		if (!m_ComponentTable.Contains(atm))
+			m_ComponentTable.Add(atm, m_Components.Size());
+	}
 		break;
-	case hm::Component::Type::GRAPHICS:
+	case hm::Component::Type::GRAPHICS: {
 		c = hm::GraphicsComponent::Create();
-		m_ComponentTable.Add("graphics", m_Components.Size());
+		StringAtom atm = StringAtom("graphics");
+		if (!m_ComponentTable.Contains(atm))
+			m_ComponentTable.Add(atm, m_Components.Size());
+	}
 		break;
 	}
-
-	c->m_Entity = this;
-	m_Components.Append(c);
-
-	return *c;
+	if (c != nullptr)
+		c->m_Entity = this;
+		m_Components.Append(c);
+		return *c;
 }
 
 hm::Component& hm::Entity::GetComponent(const StringAtom& name)
 {
 	return *m_Components[m_ComponentTable[name]];
 }
-
-bool hm::Entity::RegisterVariable(const StringAtom& name, Variant& value)
-{
-	if (m_Variables.Contains(name))
-		return false;
-
-	m_Variables.Add(name, Variant(value));
-	return true;
-};
 
 void hm::Entity::ReceiveMessage(const Message& message)
 {

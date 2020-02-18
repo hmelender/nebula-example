@@ -8,6 +8,7 @@
 #include "models/modelcontext.h"
 #include "visibility/visibilitycontext.h"
 #include "component.h"
+#include "math/matrix44.h"
 
 namespace hm
 {
@@ -21,16 +22,22 @@ namespace hm
 	class GraphicsComponent : public Component, public RefCounted
 	{
 		__DeclareClass(hm::GraphicsComponent);
-	private:
+		friend class TransformComponent;
+	protected:
 		GraphicsEntityId m_GraphicsId;
 
+		void SetTransform(const Math::matrix44& matrix);
 	public:
 		GraphicsComponent();
 		void Init();
 		void Update();
 		void Shutdown();
 		void ReceiveMessage(const Message& message);
+
+		GraphicsComponent& operator=(const Component& rhs);
+
 		void LoadModel(const Resources::ResourceName& uri, const StringAtom& tag);
+		void ChangeModel(const Resources::ResourceName& uri, const StringAtom& tag);
 	};
 
 }

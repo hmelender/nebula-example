@@ -27,27 +27,31 @@ hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name)
 	
 	m_EntityTable.Add(name, s);
 
-	if (m_Initialized)
-		e->Init();
+	e->Init();
 
 	return *e;
 }
 
 hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name, const Resources::ResourceName& uri, const StringAtom& tag)
 {
+	return CreateEntity(name, uri, tag, point(0.0f, 0.0f, 0.0f));
+}
+
+hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name, const Resources::ResourceName& uri, const StringAtom& tag, const Math::point& position)
+{
 	Entity* e = Entity::Create();
 	TransformComponent& t = *(TransformComponent*)&e->CreateComponent(Component::Type::TRANSFORM);
 	GraphicsComponent& g = *(GraphicsComponent*)&e->CreateComponent(Component::Type::GRAPHICS);
-	
+
 
 	size_t s = m_Entities.Size();
 	m_Entities.Append(e);
 
 	m_EntityTable.Add(name, s);
 
-	if (m_Initialized)
-		e->Init();
+	e->Init();
 
+	t.SetPosition(position);
 	g.LoadModel(uri, tag);
 
 	return *e;
