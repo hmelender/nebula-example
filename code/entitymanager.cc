@@ -7,6 +7,7 @@ hm::EntityManager::EntityManager() : m_Initialized(false)
 
 }
 
+hm::EntityManager* hm::EntityManager::s_Instance = nullptr;
 
 hm::EntityManager& hm::EntityManager::GetInstance()
 {
@@ -19,7 +20,7 @@ hm::EntityManager& hm::EntityManager::GetInstance()
 hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name)
 {
 	Entity* e = Entity::Create();
-	TransformComponent& t = e->CreateComponent<TransformComponent>(Component::Type::TRANSFORM);
+	TransformComponent& t = *(TransformComponent*)&e->CreateComponent(Component::Type::TRANSFORM);
 
 	size_t s = m_Entities.Size();
 	m_Entities.Append(e);
@@ -35,8 +36,8 @@ hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name)
 hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name, const Resources::ResourceName& uri, const StringAtom& tag)
 {
 	Entity* e = Entity::Create();
-	TransformComponent& t = e->CreateComponent<TransformComponent>(Component::Type::TRANSFORM);
-	GraphicsComponent& g = e->CreateComponent<GraphicsComponent>(Component::Type::GRAPHICS);
+	TransformComponent& t = *(TransformComponent*)&e->CreateComponent(Component::Type::TRANSFORM);
+	GraphicsComponent& g = *(GraphicsComponent*)&e->CreateComponent(Component::Type::GRAPHICS);
 	
 
 	size_t s = m_Entities.Size();

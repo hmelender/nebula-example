@@ -1,4 +1,5 @@
 #include "transformcomponent.h"
+#include "entity.h"
 
 namespace hm
 {
@@ -17,11 +18,11 @@ void hm::TransformComponent::Init()
 	m_Rotation = quaternion::identity();
 
 	m_Matrix = matrix44::identity();
-	m_Entity->RegisterVariable("transform_position", m_Position);
-	m_Entity->RegisterVariable("transform_velocity", m_Velocity);
-	m_Entity->RegisterVariable("transform_scale", m_Scale);
-	m_Entity->RegisterVariable("transform_rotation", m_Rotation);
-	m_Entity->RegisterVariable("transform_matrix", m_Matrix);
+	m_Entity->RegisterVariable("transform_position", Variant(m_Position));
+	m_Entity->RegisterVariable("transform_velocity", Variant(m_Velocity));
+	m_Entity->RegisterVariable("transform_scale", Variant(m_Scale));
+	m_Entity->RegisterVariable("transform_rotation", Variant(m_Rotation));
+	m_Entity->RegisterVariable("transform_matrix", Variant(m_Matrix));
 }
 
 void hm::TransformComponent::Update()

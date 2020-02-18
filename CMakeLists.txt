@@ -16,6 +16,17 @@ nebula_begin_app(nebula-env windowed)
             main.cc
             exampleapp.cc
             exampleapp.h
+			entitymanager.cc
+			entitymanager.h
+			entity.cc
+			entity.h
+			component.cc
+			component.h
+			graphicscomponent.cc
+			graphicscomponent.h
+			transformcomponent.cc
+			transformcomponent.h
+			message.h
         )
 
     fips_deps(foundation render resource dynui scripting)

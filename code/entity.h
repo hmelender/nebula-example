@@ -36,57 +36,20 @@ namespace hm
 		void Update();
 		void Shutdown();
 
-		template <typename T>
-		T& CreateComponent(Component::Type componentType)
-		{
-			Component* c = nullptr;
-			switch (componentType)
-			{
-			case hm::Component::TRANSFORM:
-				c = TransformComponent::Create(); break;
-				m_ComponentTable.Add("transform", m_Components.Size());
-			case hm::Component::GRAPHICS:
-				c = GraphicsComponent::Create(); break;
-				m_ComponentTable.Add("graphics", m_Components.Size());
-			default: return;
-			}
-
-			c->m_Entity = this;
-			m_Components.Append(c);
-
-			switch (componentType)
-			{
-			case hm::Component::TRANSFORM:
-				return *(TransformComponent*)c;
-			case hm::Component::GRAPHICS:
-				return *(GraphicsComponent*)c;
-			default: return;
-			}
-		
-		}
-
+		Component& CreateComponent(Component::Type componentType);
 		Component& GetComponent(const StringAtom& name);
 
-		template <typename T>
-		bool RegisterVariable(const StringAtom& name, T& value) {
-			if (m_Variables.Contains(name))
-				return false;
+		bool RegisterVariable(const StringAtom& name, Variant& value);
 
-			m_Variables.Add(name, Variant(value));
-			return true;
+		inline Variant& GetVariable(const StringAtom& name) {
+			return m_Variables[name];
 		};
 
-		template <typename T>
-		inline T& GetVariable(const StringAtom& name) {
-			return m_Variables[name].Get();
-		};
-
-		template <typename T>
-		inline void SetVariable(const StringAtom& name, T& value) {
+		inline void SetVariable(const StringAtom& name, Variant& value) {
 			m_Variables[name] = value;
 		};
 
-		void ReceiveMessage(const Message& message);
+		void ReceiveMessage(const hm::Message& message);
 
 	private:
 

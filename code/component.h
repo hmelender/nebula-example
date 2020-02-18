@@ -1,14 +1,13 @@
 #pragma once
 #include "stdneb.h"
-#include "core/refcounted.h"
 #include "message.h"
-#include "entity.h"
 
-namespace hm {
 
-	using Core::RefCounted;
+namespace hm
+{
+	class Entity;
 
-	class Component: public RefCounted, public IMessageHandler
+	class Component: public IMessageHandler
 	{
 		friend class Entity;
 	protected:

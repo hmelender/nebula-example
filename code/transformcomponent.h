@@ -1,15 +1,19 @@
 #pragma once
 #include "stdneb.h"
+#include "core/refcounted.h"
 #include "math/matrix44.h"
+#include "math/float4.h"
 #include "math/quaternion.h"
 #include "component.h"
 
 namespace hm
 {
 	using Math::matrix44;
+	using Math::float4;
 	using Math::quaternion;
+	using Core::RefCounted;
 
-	class TransformComponent : public Component
+	class TransformComponent : public Component, public RefCounted
 	{
 		__DeclareClass(hm::TransformComponent);
 	private:

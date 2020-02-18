@@ -1,5 +1,7 @@
 #pragma once
 #include "stdneb.h"
+#include "core/refcounted.h"
+#include "util/stringatom.h"
 #include "graphics/graphicsserver.h"
 #include "graphics/graphicsentity.h"
 #include "models/model.h"
@@ -13,8 +15,10 @@ namespace hm
 	using Models::ModelContext;
 	using Visibility::ObservableContext;
 	using Visibility::VisibilityEntityType;
+	using Util::StringAtom;
+	using Core::RefCounted;
 
-	class GraphicsComponent : public Component
+	class GraphicsComponent : public Component, public RefCounted
 	{
 		__DeclareClass(hm::GraphicsComponent);
 	private:
