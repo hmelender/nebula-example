@@ -1,5 +1,10 @@
 #include "transformcomponent.h"
 
+namespace hm
+{
+	__ImplementClass(hm::TransformComponent, 'HMTC', Core::RefCounted)
+}
+
 hm::TransformComponent::TransformComponent()
 {
 }

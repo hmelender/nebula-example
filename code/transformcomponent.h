@@ -11,6 +11,7 @@ namespace hm
 
 	class TransformComponent : public Component
 	{
+		__DeclareClass(hm::TransformComponent);
 	private:
 		float4 m_Velocity;
 

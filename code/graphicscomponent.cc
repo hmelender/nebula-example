@@ -1,6 +1,11 @@
 #include "graphicscomponent.h"
 #include "transformcomponent.h"
 
+namespace hm
+{
+	__ImplementClass(hm::GraphicsComponent, 'HMGC', Core::RefCounted)
+}
+
 hm::GraphicsComponent::GraphicsComponent()
 {
 }

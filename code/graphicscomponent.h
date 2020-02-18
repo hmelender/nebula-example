@@ -16,6 +16,7 @@ namespace hm
 
 	class GraphicsComponent : public Component
 	{
+		__DeclareClass(hm::GraphicsComponent);
 	private:
 		GraphicsEntityId m_GraphicsId;
 

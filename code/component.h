@@ -15,8 +15,8 @@ namespace hm {
 		Entity* m_Entity;
 
 	public:
-		enum Type {
-			TRANSFORM, GRAPHICS
+		enum class Type {
+			TRANSFORM, GRAPHICS, CHARACTER
 		};
 
 		Component();

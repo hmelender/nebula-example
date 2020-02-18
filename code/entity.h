@@ -26,7 +26,8 @@ namespace hm
 		__DeclareClass(hm::Entity);
 	private:
 
-		Array<Component> m_Components;
+		Array<Component*> m_Components;
+		HashTable<StringAtom, IndexT> m_ComponentTable;
 		HashTable<StringAtom, Variant> m_Variables;
 
 	public:
@@ -35,8 +36,36 @@ namespace hm
 		void Update();
 		void Shutdown();
 
-		void AddComponent(Component& component);
-		void CreateComponent(Component::Type componentType);
+		template <typename T>
+		T& CreateComponent(Component::Type componentType)
+		{
+			Component* c = nullptr;
+			switch (componentType)
+			{
+			case hm::Component::TRANSFORM:
+				c = TransformComponent::Create(); break;
+				m_ComponentTable.Add("transform", m_Components.Size());
+			case hm::Component::GRAPHICS:
+				c = GraphicsComponent::Create(); break;
+				m_ComponentTable.Add("graphics", m_Components.Size());
+			default: return;
+			}
+
+			c->m_Entity = this;
+			m_Components.Append(c);
+
+			switch (componentType)
+			{
+			case hm::Component::TRANSFORM:
+				return *(TransformComponent*)c;
+			case hm::Component::GRAPHICS:
+				return *(GraphicsComponent*)c;
+			default: return;
+			}
+		
+		}
+
+		Component& GetComponent(const StringAtom& name);
 
 		template <typename T>
 		bool RegisterVariable(const StringAtom& name, T& value) {

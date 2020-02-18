@@ -33,7 +33,9 @@
 #include "system/nebulasettings.h"
 
 // My includes
+#include "entitymanager.h"
 #include "entity.h"
+#include "graphicscomponent.h"
 
 
 #ifdef __WIN32__
@@ -256,6 +258,8 @@ ExampleApplication::Run()
 
     const Ptr<Input::Keyboard>& keyboard = inputServer->GetDefaultKeyboard();
     const Ptr<Input::Mouse>& mouse = inputServer->GetDefaultMouse();
+
+	hm::EntityManager& entityManager = hm::EntityManager::GetInstance();
     
     Graphics::GraphicsEntityId exampleEntity = Graphics::CreateEntity();
     // Register entity to various graphics contexts.
@@ -284,6 +288,11 @@ ExampleApplication::Run()
     Characters::CharacterContext::PlayClip(animatedEntity, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
 
 	// Other entities
+
+	entityManager.CreateEntity("ground", "mdl:environment/Groundplane.n3", "Examples");
+	entityManager.CreateEntity("trees", "mdl:Vegetation/Trees_01.n3", "Examples");
+	entityManager.CreateEntity("catapult", "mdl:Units/Unit_Catapult.n3", "Examples");
+
 	/*
 	Graphics::GraphicsEntityId groundEntity = Graphics::CreateEntity();
 	Graphics::RegisterEntity<ModelContext, ObservableContext>(groundEntity);
@@ -306,17 +315,7 @@ ExampleApplication::Run()
 	ObservableContext::Setup(catapultEntity, VisibilityEntityType::Model);
 	*/
 
-	/*
-	auto en1 = Game::Entity::Create(Math::point(0, 0, 0));
-	Game::Entity::Get(en1).LoadModel("mdl:environment/Groundplane.n3", "Examples");
-
-	auto en2 = Game::Entity::Create(Math::point(0, 0, 0));
-	Game::Entity::Get(en2).LoadModel("mdl:Vegetation/Trees_01.n3", "Examples");
-
-	auto en3 = Game::Entity::Create(Math::point(0, 0, 0));
-	Game::Entity::Get(en3).LoadModel("mdl:Units/Unit_Catapult.n3", "Examples");
-	*/
-
+	entityManager.Init();
 
     // Create a point light entity
     Graphics::GraphicsEntityId pointLight = Graphics::CreateEntity();
@@ -351,6 +350,10 @@ ExampleApplication::Run()
         }
         
         // put game code which need visibility data here
+
+		entityManager.Update();
+
+
         this->gfxServer->RenderViews();
 
         // put game code which needs rendering to be done (animation etc) here
@@ -388,6 +391,8 @@ ExampleApplication::Run()
         frameIndex++;             
         this->inputServer->EndFrame();
     }
+
+	entityManager.Shutdown();
 }
 
 //------------------------------------------------------------------------------
