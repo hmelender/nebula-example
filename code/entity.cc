@@ -1,6 +1,7 @@
 #include "entity.h"
 #include "transformcomponent.h"
 #include "graphicscomponent.h"
+#include "pybind11.h"
 
 namespace hm
 {
