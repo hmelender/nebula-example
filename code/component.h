@@ -1,14 +1,14 @@
 #pragma once
 #include "stdneb.h"
-#include "message.h"
 
 namespace hm
 {
 	class Entity;
 	class TransformComponent;
 	class GraphicsComponent;
+	class Message;
 
-	class Component: public IMessageHandler
+	class Component
 	{
 		friend class Entity;
 	protected:
@@ -16,7 +16,7 @@ namespace hm
 		bool m_Initialized;
 	public:
 		enum class Type {
-			TRANSFORM, GRAPHICS, CHARACTER
+			NONE, TRANSFORM, GRAPHICS, CHARACTER
 		};
 
 		Component();

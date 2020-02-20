@@ -2,6 +2,7 @@
 #include "transformcomponent.h"
 #include "graphicscomponent.h"
 #include "pybind11.h"
+#include "message.h"
 
 namespace hm
 {
@@ -16,6 +17,9 @@ void hm::Entity::Init()
 {
 	if (m_Initialized)
 		return;
+
+	RegisterMessageHandler();
+	SubscribeToMsgTypes(Message::Type::DEFAULT | Message::Type::NONE);
 
 	for (Component* c: m_Components) {
 		c->Init();
@@ -75,4 +79,3 @@ void hm::Entity::ReceiveMessage(const Message& message)
 		c->ReceiveMessage(message);
 	}
 }
-

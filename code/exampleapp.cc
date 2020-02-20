@@ -259,70 +259,42 @@ ExampleApplication::Run()
 
     const Ptr<Input::Keyboard>& keyboard = inputServer->GetDefaultKeyboard();
     const Ptr<Input::Mouse>& mouse = inputServer->GetDefaultMouse();
-
-	hm::EntityManager& entityManager = hm::EntityManager::GetInstance();
     
-    Graphics::GraphicsEntityId exampleEntity = Graphics::CreateEntity();
     // Register entity to various graphics contexts.
     // The template parameters are which contexts that the entity should be registered to.
     // ModelContext takes care of loading models and also handles transforms for instances of models.
     // Registering an entity to the ObservableContext will allow cameras to observe the entity (adds the entity to visibility culling system)
-    Graphics::RegisterEntity<ModelContext, ObservableContext>(exampleEntity);
-    // Setup the entitys model instance
-    ModelContext::Setup(exampleEntity, "mdl:system/placeholder.n3", "Examples");
-    // Set the transform of the entity
-    ModelContext::SetTransform(exampleEntity, Math::matrix44::translation(Math::point(0, 0, 0)));
-    // Setup the observable as a model
-    ObservableContext::Setup(exampleEntity, VisibilityEntityType::Model);
 
     // Example animated entity
-    Graphics::GraphicsEntityId animatedEntity = Graphics::CreateEntity();
-    // The CharacterContext holds skinned, animated entites and takes care of playing animations etc.
-    Graphics::RegisterEntity<ModelContext, ObservableContext, Characters::CharacterContext>(animatedEntity);
-    // create model and move it to the front
-    ModelContext::Setup(animatedEntity, "mdl:Units/Unit_Footman.n3", "Examples");
-    ModelContext::SetTransform(animatedEntity, Math::matrix44::translation(Math::point(5, 0, 0)));
-    ObservableContext::Setup(animatedEntity, VisibilityEntityType::Model);
-    // Setup the character context instance.
-    // nsk3 is the skeleton resource, nax3 is the animation resource. nax3 files can contain multiple animation clips
-    Characters::CharacterContext::Setup(animatedEntity, "ske:Units/Unit_Footman.nsk3", "ani:Units/Unit_Footman.nax3", "Examples");
-    Characters::CharacterContext::PlayClip(animatedEntity, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
+    //Graphics::GraphicsEntityId animatedEntity = Graphics::CreateEntity();
+    //// The CharacterContext holds skinned, animated entites and takes care of playing animations etc.
+    //Graphics::RegisterEntity<ModelContext, ObservableContext, Characters::CharacterContext>(animatedEntity);
+    //// create model and move it to the front
+    //ModelContext::Setup(animatedEntity, "mdl:Units/Unit_Footman.n3", "Examples");
+    //ModelContext::SetTransform(animatedEntity, Math::matrix44::translation(Math::point(5, 0, 0)));
+    //ObservableContext::Setup(animatedEntity, VisibilityEntityType::Model);
+    //// Setup the character context instance.
+    //// nsk3 is the skeleton resource, nax3 is the animation resource. nax3 files can contain multiple animation clips
+    //Characters::CharacterContext::Setup(animatedEntity, "ske:Units/Unit_Footman.nsk3", "ani:Units/Unit_Footman.nax3", "Examples");
+    //Characters::CharacterContext::PlayClip(animatedEntity, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
 
-	// Other entities
+    hm::EntityManager& entityManager = hm::EntityManager::GetInstance();
 
 	entityManager.CreateEntity("ground", "mdl:environment/Groundplane.n3", "Examples");
 	entityManager.CreateEntity("trees", "mdl:Vegetation/Trees_01.n3", "Examples");
 	entityManager.CreateEntity("catapult", "mdl:Units/Unit_Catapult.n3", "Examples");
+    entityManager.CreateEntity("placeholder", "mdl:system/placeholder.n3", "Examples");
 
 	entityManager.Init();
 
 	hm::Entity& catapult = entityManager.GetEntity("catapult");
 	hm::TransformComponent& catapultTransform = catapult.GetComponent("transform");
-	Math::matrix44 mat = catapult.GetVariable("transform_matrix");
 
-	/*
-	Graphics::GraphicsEntityId groundEntity = Graphics::CreateEntity();
-	Graphics::RegisterEntity<ModelContext, ObservableContext>(groundEntity);
-	ModelContext::Setup(groundEntity, "mdl:environment/Groundplane.n3", "Examples");
-	ModelContext::SetTransform(groundEntity, Math::matrix44::translation(Math::point(0, 0, 0)));
-	ObservableContext::Setup(groundEntity, VisibilityEntityType::Model);
+    hm::Entity& placeholder = entityManager.GetEntity("placeholder");
+    hm::TransformComponent& placeholderTransform = placeholder.GetComponent("transform");
 
-
-	Graphics::GraphicsEntityId treeEntity = Graphics::CreateEntity();
-	Graphics::RegisterEntity<ModelContext, ObservableContext>(treeEntity);
-	ModelContext::Setup(treeEntity, "mdl:Vegetation/Trees_01.n3", "Examples");
-	ModelContext::SetTransform(treeEntity, Math::matrix44::translation(Math::point(0, 0, 0)));
-	ObservableContext::Setup(treeEntity, VisibilityEntityType::Model);
-	
-
-	Graphics::GraphicsEntityId catapultEntity = Graphics::CreateEntity();
-	Graphics::RegisterEntity<ModelContext, ObservableContext>(catapultEntity);
-	ModelContext::Setup(catapultEntity, "mdl:Units/Unit_Catapult.n3", "Examples");
-	ModelContext::SetTransform(catapultEntity, Math::matrix44::translation(Math::point(0, 0, 0)));
-	ObservableContext::Setup(catapultEntity, VisibilityEntityType::Model);
-	*/
-
-
+    placeholderTransform.SetPosition(Math::point(0.0f, 2.0f, 0.0f));
+    placeholderTransform.SetPivot(Math::point(5.0f, 0.0f, 0.0f));
 
     // Create a point light entity
     Graphics::GraphicsEntityId pointLight = Graphics::CreateEntity();
@@ -359,6 +331,8 @@ ExampleApplication::Run()
         // put game code which need visibility data here
 
 		catapultTransform.RotateAxis(hm::TransformComponent::Axis::Y, 0.5f * gfxServer->GetFrameTime());
+        placeholderTransform.RotateAxis(hm::TransformComponent::Axis::Y, -1.0f * gfxServer->GetFrameTime());
+
 
 		entityManager.Update();
 

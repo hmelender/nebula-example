@@ -1,6 +1,7 @@
 #include "transformcomponent.h"
 #include "graphicscomponent.h"
 #include "entity.h"
+#include "message.h"
 
 namespace hm
 {
@@ -127,4 +128,10 @@ void hm::TransformComponent::SetScale(const float4& scale)
 void hm::TransformComponent::SetScale(float x, float y, float z)
 {
 	m_Transform.setscale(vector(x, y, z));
+}
+
+void hm::TransformComponent::SetPivot(const point& position)
+{
+	m_Transform.setrotatepivot(position);
+	m_Transform.setscalepivot(position);
 }

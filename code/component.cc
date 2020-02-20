@@ -1,6 +1,7 @@
 #include "component.h"
 #include "transformcomponent.h"
 #include "graphicscomponent.h"
+#include "message.h"
 
 hm::Component::Component() : m_Entity(nullptr), m_Initialized(false)
 {

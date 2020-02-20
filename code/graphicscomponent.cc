@@ -1,6 +1,7 @@
 #include "graphicscomponent.h"
 #include "transformcomponent.h"
 #include "entity.h"
+#include "message.h"
 
 namespace hm
 {

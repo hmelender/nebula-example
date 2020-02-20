@@ -26,8 +26,10 @@ nebula_begin_app(nebula-env windowed)
 			graphicscomponent.h
 			transformcomponent.cc
 			transformcomponent.h
-			message.h
 			variant_ext.h
+			pybind11.h
+			message.h
+			message.cc
         )
 
     fips_deps(foundation render resource dynui scripting)

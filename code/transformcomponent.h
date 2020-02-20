@@ -43,16 +43,6 @@ namespace hm
 		void Shutdown();
 		void ReceiveMessage(const Message& message);
 
-		/*
-		TransformComponent& operator=(hm::Component& rhs) {
-			return *this = dynamic_cast<TransformComponent&>(rhs);
-		}
-		*/
-		/*
-		TransformComponent& operator=(Component const& rhs)
-		{ return *this = dynamic_cast<TransformComponent const &>(rhs); }
-		*/
-
 		void SetPosition(const point& position);
 		void SetPosition(float x, float y, float z);
 		void Translate(const float4& vector);
@@ -65,6 +55,7 @@ namespace hm
 		void SetScale(float scale);
 		void SetScale(const float4& scale);
 		void SetScale(float x, float y, float z);
+		void SetPivot(const point& position);
 	};
 
 }
