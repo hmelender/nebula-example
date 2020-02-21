@@ -15,14 +15,14 @@ void hm::IMessageHandler::RegisterMessageHandler()
 	MessageDispatcher::RegisterMessageHandler(*this);
 }
 
-void hm::IMessageHandler::SubscribeToMsgTypes(MessageTypeFlags messageTypes)
+void hm::IMessageHandler::SubscribeToMsgTypes(hm::IMessageHandler::MessageTypeFlags messageTypes)
 {
-	m_MessageTypeFlags.field &= (uint32_t)messageTypes.field;
+	m_MessageTypeFlags.field |= (uint32_t)messageTypes.field;
 }
 
-void hm::IMessageHandler::UnsubscribeToMsgTypes(MessageTypeFlags messageTypes)
+void hm::IMessageHandler::UnsubscribeToMsgTypes(hm::IMessageHandler::MessageTypeFlags messageTypes)
 {
-	m_MessageTypeFlags.field &= ~((uint32_t)messageTypes.field);
+	m_MessageTypeFlags.field |= ~((uint32_t)messageTypes.field);
 }
 
 bool hm::IMessageHandler::IsSubscribedToMsgType(Message::Type messageType) const
@@ -60,6 +60,9 @@ void hm::MessageDispatcher::DeliverMessage(const Message& message)
 
 void hm::MessageDispatcher::DispatchMessages()
 {
+	if (m_MessageQueue.IsEmpty())
+		return;
+
 	Message& msg = m_MessageQueue.Dequeue();
 	IMessageHandler* handler = msg.m_Recipient;
 

@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "entitymanager.h"
 #include "transformcomponent.h"
 #include "graphicscomponent.h"
 #include "pybind11.h"
@@ -19,7 +20,7 @@ void hm::Entity::Init()
 		return;
 
 	RegisterMessageHandler();
-	SubscribeToMsgTypes(Message::Type::DEFAULT | Message::Type::NONE);
+	SubscribeToMsgTypes(Message::Type::DEFAULT | Message::Type::DESTROY);
 
 	for (Component* c: m_Components) {
 		c->Init();
@@ -76,6 +77,10 @@ hm::Component& hm::Entity::GetComponent(const StringAtom& name)
 void hm::Entity::ReceiveMessage(const Message& message)
 {
 	for (Component* c : m_Components) {
-		c->ReceiveMessage(message);
+		if (message.m_ComponentType == c->m_Type)
+			c->ReceiveMessage(message);
 	}
+
+	if (message.m_MessageType == Message::Type::DESTROY)
+		hm::EntityManager::GetInstance().RemoveEntity(*this);
 }

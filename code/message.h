@@ -14,19 +14,18 @@ namespace hm
 
 	class MessageDispatcher
 	{
-		friend class IMessageHandler;
 	protected:
 		MessageDispatcher();
-		static void RegisterMessageHandler(IMessageHandler& messageHandler);
-		static void DeliverMessage(const Message& message);
+		void DispatchMessages();
 
 	private:
 		static MessageDispatcher* s_Instance;
 		Queue<Message> m_MessageQueue;
 		Array<IMessageHandler*> m_Handlers;
 
-		void DispatchMessages();
-
+	public:
+		static void RegisterMessageHandler(IMessageHandler& messageHandler);
+		static void DeliverMessage(const Message& message);
 	};
 
 	class Message
@@ -66,7 +65,11 @@ namespace hm
 			struct {
 				uint32_t RESERVED0 : 1;
 				uint32_t DEFAULT : 1;
-				uint32_t RESERVED1 : 30;
+				uint32_t SET_ACTIVE : 1;
+				uint32_t TRANSFORM : 1;
+				uint32_t DESTROY : 1;
+				uint32_t RESERVED1 : 27;
+				
 			};
 
 			uint32_t field;

@@ -22,9 +22,11 @@ namespace hm
 
 	class Entity: public RefCounted, public IMessageHandler
 	{
+		friend class EntityManager;
 		__DeclareClass(hm::Entity);
-	private:
+	protected:
 
+		StringAtom m_Name;
 		Array<Component*> m_Components;
 		HashTable<StringAtom, IndexT> m_ComponentTable;
 		HashTable<StringAtom, Variant> m_Variables;

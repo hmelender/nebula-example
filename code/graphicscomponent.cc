@@ -13,7 +13,7 @@ void hm::GraphicsComponent::SetTransform(const Math::matrix44& matrix)
 	ModelContext::SetTransform(m_GraphicsId, matrix);
 }
 
-hm::GraphicsComponent::GraphicsComponent() : hm::Component()
+hm::GraphicsComponent::GraphicsComponent() : hm::Component(Type::GRAPHICS)
 {
 }
 
@@ -33,6 +33,8 @@ void hm::GraphicsComponent::Update()
 
 void hm::GraphicsComponent::Shutdown()
 {
+	Graphics::DeregisterEntity<ModelContext, ObservableContext>(m_GraphicsId);
+	Graphics::DestroyEntity(m_GraphicsId);
 }
 
 void hm::GraphicsComponent::ReceiveMessage(const Message& message)

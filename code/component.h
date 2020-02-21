@@ -18,8 +18,9 @@ namespace hm
 		enum class Type {
 			NONE, TRANSFORM, GRAPHICS, CHARACTER
 		};
+		const Type m_Type;
 
-		Component();
+		Component(Type type);
 		virtual void Init() = 0;
 		virtual void Update() = 0;
 		virtual void Shutdown() = 0;

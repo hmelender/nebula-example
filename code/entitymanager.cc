@@ -20,6 +20,7 @@ hm::EntityManager& hm::EntityManager::GetInstance()
 hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name)
 {
 	Entity* e = Entity::Create();
+	e->m_Name = name;
 	TransformComponent& t = *(TransformComponent*)&e->CreateComponent(Component::Type::TRANSFORM);
 
 	size_t s = m_Entities.Size();
@@ -40,6 +41,7 @@ hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name, const Resour
 hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name, const Resources::ResourceName& uri, const StringAtom& tag, const Math::point& position)
 {
 	Entity* e = Entity::Create();
+	e->m_Name = name;
 	TransformComponent& t = *(TransformComponent*)&e->CreateComponent(Component::Type::TRANSFORM);
 	GraphicsComponent& g = *(GraphicsComponent*)&e->CreateComponent(Component::Type::GRAPHICS);
 
@@ -64,13 +66,25 @@ hm::Entity& hm::EntityManager::GetEntity(const StringAtom& name)
 
 void hm::EntityManager::RemoveEntity(const StringAtom& name)
 {
-	size_t s = m_EntityTable[name];
-	Entity* e = m_Entities[s];
-	if (e == nullptr)
-		return
-	e->Shutdown();
+	IndexT idx = m_EntityTable[name];
+	IndexT lastIdx = m_Entities.Size() - 1;
+	Entity* e = m_Entities[idx];
+
 	m_EntityTable.Erase(name);
-	m_Entities.EraseIndex(s);
+	m_Entities.EraseIndexSwap(idx);
+	if (e != nullptr)
+		e->Shutdown();
+
+	if (idx != lastIdx) {
+
+		Entity* lastEntity = m_Entities[lastIdx];
+		m_EntityTable[lastEntity->m_Name] = idx;
+	}
+}
+
+void hm::EntityManager::RemoveEntity(Entity& entity)
+{
+	RemoveEntity(entity.m_Name);
 }
 
 void hm::EntityManager::Init()
@@ -83,6 +97,8 @@ void hm::EntityManager::Init()
 
 void hm::EntityManager::Update()
 {
+	DispatchMessages();
+
 	for (Entity* e : m_Entities) {
 		e->Update();
 	}

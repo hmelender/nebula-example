@@ -292,6 +292,7 @@ ExampleApplication::Run()
 
     hm::Entity& placeholder = entityManager.GetEntity("placeholder");
     hm::TransformComponent& placeholderTransform = placeholder.GetComponent("transform");
+    float timer = 0.0f;
 
     placeholderTransform.SetPosition(Math::point(0.0f, 2.0f, 0.0f));
     placeholderTransform.SetPivot(Math::point(5.0f, 0.0f, 0.0f));
@@ -332,7 +333,14 @@ ExampleApplication::Run()
 
 		catapultTransform.RotateAxis(hm::TransformComponent::Axis::Y, 0.5f * gfxServer->GetFrameTime());
         placeholderTransform.RotateAxis(hm::TransformComponent::Axis::Y, -1.0f * gfxServer->GetFrameTime());
+        if (timer > 5.0f) {
+            hm::Message msg(placeholder, hm::Message::Type::DESTROY);
+            hm::MessageDispatcher::DeliverMessage(msg);
+            timer = -1.0f;
+        }
 
+        if (timer < 5.0f && timer >= 0.0f)
+            timer += gfxServer->GetFrameTime();
 
 		entityManager.Update();
 

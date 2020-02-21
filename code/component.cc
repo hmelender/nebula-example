@@ -3,7 +3,7 @@
 #include "graphicscomponent.h"
 #include "message.h"
 
-hm::Component::Component() : m_Entity(nullptr), m_Initialized(false)
+hm::Component::Component(Type type) : m_Entity(nullptr), m_Initialized(false), m_Type(type)
 {
 }
 

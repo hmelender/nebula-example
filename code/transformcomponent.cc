@@ -8,7 +8,7 @@ namespace hm
 	__ImplementClass(hm::TransformComponent, 'HMTC', Core::RefCounted)
 }
 
-hm::TransformComponent::TransformComponent() : hm::Component(), m_Matrix(nullptr), m_InMotion(false), m_Graphics(nullptr)
+hm::TransformComponent::TransformComponent() : hm::Component(Type::TRANSFORM), m_Matrix(nullptr), m_InMotion(false), m_Graphics(nullptr)
 {
 }
 
