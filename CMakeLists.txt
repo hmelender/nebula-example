@@ -26,6 +26,8 @@ nebula_begin_app(nebula-env windowed)
 			graphicscomponent.h
 			transformcomponent.cc
 			transformcomponent.h
+			lightcomponent.cc
+			lightcomponent.h
 			variant_ext.h
 			pybind11.h
 			message.h

@@ -8,7 +8,7 @@ namespace hm
 	__ImplementClass(hm::TransformComponent, 'HMTC', Core::RefCounted)
 }
 
-hm::TransformComponent::TransformComponent() : hm::Component(Type::TRANSFORM), m_Matrix(nullptr), m_InMotion(false), m_Graphics(nullptr)
+hm::TransformComponent::TransformComponent() : hm::Component(Type::TRANSFORM), m_Matrix(nullptr), m_InMotion(false), m_Transformable(nullptr)
 {
 }
 
@@ -35,7 +35,8 @@ void hm::TransformComponent::Update()
 
 	if (m_Transform.isdirty()) {
 		m_Matrix = &(m_Transform.getmatrix());
-		m_Graphics->SetTransform(*m_Matrix);
+		if (m_Transformable != nullptr)
+			m_Transformable->SetTransform(*m_Matrix);
 	}
 
 }

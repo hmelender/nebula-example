@@ -1,6 +1,7 @@
 #include "entitymanager.h"
 #include "transformcomponent.h"
 #include "graphicscomponent.h"
+#include "lightcomponent.h"
 
 hm::EntityManager::EntityManager() : m_Initialized(false)
 {
@@ -21,7 +22,7 @@ hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name)
 {
 	Entity* e = Entity::Create();
 	e->m_Name = name;
-	TransformComponent& t = *(TransformComponent*)&e->CreateComponent(Component::Type::TRANSFORM);
+	TransformComponent& t = e->CreateComponent(Component::Type::TRANSFORM);
 
 	size_t s = m_Entities.Size();
 	m_Entities.Append(e);
@@ -42,8 +43,8 @@ hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name, const Resour
 {
 	Entity* e = Entity::Create();
 	e->m_Name = name;
-	TransformComponent& t = *(TransformComponent*)&e->CreateComponent(Component::Type::TRANSFORM);
-	GraphicsComponent& g = *(GraphicsComponent*)&e->CreateComponent(Component::Type::GRAPHICS);
+	TransformComponent& t = e->CreateComponent(Component::Type::TRANSFORM);
+	GraphicsComponent& g = e->CreateComponent(Component::Type::GRAPHICS);
 
 
 	size_t s = m_Entities.Size();
@@ -59,6 +60,14 @@ hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name, const Resour
 	return *e;
 }
 
+hm::Entity& hm::EntityManager::CreatePointLight(const StringAtom& name, const Math::float4& color, float intensity, const Math::point& position, float range, bool castShadows)
+{
+	Entity& e = CreateEntity(name);
+	LightComponent& l = e.CreateComponent(Component::Type::LIGHT);
+	l.SetupPointLight(color, intensity, position, range, castShadows);
+	return e;
+}
+
 hm::Entity& hm::EntityManager::GetEntity(const StringAtom& name)
 {
 	return *m_Entities[m_EntityTable[name]];
@@ -69,6 +78,7 @@ void hm::EntityManager::RemoveEntity(const StringAtom& name)
 	IndexT idx = m_EntityTable[name];
 	IndexT lastIdx = m_Entities.Size() - 1;
 	Entity* e = m_Entities[idx];
+	Entity* lastEntity = m_Entities[lastIdx];
 
 	m_EntityTable.Erase(name);
 	m_Entities.EraseIndexSwap(idx);
@@ -76,8 +86,6 @@ void hm::EntityManager::RemoveEntity(const StringAtom& name)
 		e->Shutdown();
 
 	if (idx != lastIdx) {
-
-		Entity* lastEntity = m_Entities[lastIdx];
 		m_EntityTable[lastEntity->m_Name] = idx;
 	}
 }

@@ -2,6 +2,7 @@
 #include "entitymanager.h"
 #include "transformcomponent.h"
 #include "graphicscomponent.h"
+#include "lightcomponent.h"
 #include "pybind11.h"
 #include "message.h"
 
@@ -46,27 +47,35 @@ void hm::Entity::Shutdown()
 hm::Component& hm::Entity::CreateComponent(hm::Component::Type componentType)
 {
 	hm::Component* c = nullptr;
+	const char* name = "none";
 	switch (componentType)
 	{
 	case hm::Component::Type::TRANSFORM: {
 		c = hm::TransformComponent::Create();
-		StringAtom atm = StringAtom("transform");
-		if (!m_ComponentTable.Contains(atm))
-			m_ComponentTable.Add(atm, m_Components.Size());
+		name = "transform";
 	}
 		break;
 	case hm::Component::Type::GRAPHICS: {
 		c = hm::GraphicsComponent::Create();
-		StringAtom atm = StringAtom("graphics");
-		if (!m_ComponentTable.Contains(atm))
-			m_ComponentTable.Add(atm, m_Components.Size());
+		name = "graphics";
+	}
+		break;
+	case hm::Component::Type::LIGHT: {
+		c = hm::LightComponent::Create();
+		name = "light";
 	}
 		break;
 	}
-	if (c != nullptr)
+
+	if (c != nullptr) {
+
+		if (!m_ComponentTable.Contains(name))
+			m_ComponentTable.Add(name, m_Components.Size());
 		c->m_Entity = this;
 		m_Components.Append(c);
-		return *c;
+		if (m_Initialized) c->Init();
+	}
+	return *c;
 }
 
 hm::Component& hm::Entity::GetComponent(const StringAtom& name)

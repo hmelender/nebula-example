@@ -162,6 +162,11 @@ ExampleApplication::Open()
             this->GetAppTitle(), "", CoreGraphics::AntiAliasQuality::None, true, true, false
         };
         this->wnd = CreateWindow(wndInfo);
+		
+#if NEBULA_ENABLE_PROFILING
+		Profiling::ProfilingRegisterThread();
+#endif
+		
 		this->cam = Graphics::CreateEntity();
 
         // create contexts, this could and should be bundled together
@@ -284,6 +289,7 @@ ExampleApplication::Run()
 	entityManager.CreateEntity("trees", "mdl:Vegetation/Trees_01.n3", "Examples");
 	entityManager.CreateEntity("catapult", "mdl:Units/Unit_Catapult.n3", "Examples");
     entityManager.CreateEntity("placeholder", "mdl:system/placeholder.n3", "Examples");
+    entityManager.CreatePointLight("light", Math::float4(1.0f, 1.0f, 1.0f, 1.0f), 10.0f, Math::point(1.0f, 3.5f, 1.0f), 100.0f, true);
 
 	entityManager.Init();
 
@@ -297,14 +303,13 @@ ExampleApplication::Run()
     placeholderTransform.SetPosition(Math::point(0.0f, 2.0f, 0.0f));
     placeholderTransform.SetPivot(Math::point(5.0f, 0.0f, 0.0f));
 
-    // Create a point light entity
-    Graphics::GraphicsEntityId pointLight = Graphics::CreateEntity();
-    // You can also register to contexts directly
-    Lighting::LightContext::RegisterEntity(pointLight);
-    Lighting::LightContext::SetupPointLight(pointLight, Math::float4(4.5, 0.5, 0.2, 1), 10.0f, Math::matrix44::translation(1, 2, 1), 100.0f, true);
 
     while (run && !inputServer->IsQuitRequested())
     {   
+#if NEBULA_ENABLE_PROFILING
+		Profiling::ProfilingNewFrame();
+#endif
+
 #if __NEBULA_HTTP__
 		this->httpServerProxy->HandlePendingRequests();
 #endif

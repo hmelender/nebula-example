@@ -49,7 +49,7 @@ hm::GraphicsComponent& hm::GraphicsComponent::operator=(const hm::Component& rhs
 void hm::GraphicsComponent::LoadModel(const Resources::ResourceName& uri, const StringAtom& tag)
 {
 	TransformComponent& t = m_Entity->GetComponent("transform");
-	t.m_Graphics = this;
+	t.m_Transformable = this;
 
 	ModelContext::Setup(m_GraphicsId, uri, tag);
 	ModelContext::SetTransform(m_GraphicsId, *(t.m_Matrix));

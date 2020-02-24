@@ -5,6 +5,7 @@
     
     (C) 2020 Individual contributors, see AUTHORS file
 */
+#include "profiling/profiling.h"
 #include "app/application.h"
 #include "renderutil/mayacamerautil.h"
 #include "renderutil/freecamerautil.h"

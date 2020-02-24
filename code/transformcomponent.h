@@ -22,12 +22,13 @@ namespace hm
 	{
 		__DeclareClass(hm::TransformComponent);
 		friend class GraphicsComponent;
+		friend class LightComponent;
 	protected:
 
 		float4 m_Velocity;
 		transform44 m_Transform;
 		const matrix44* m_Matrix;
-		GraphicsComponent* m_Graphics;
+		Component* m_Transformable;
 
 		bool m_InMotion;
 	public:
