@@ -38,9 +38,10 @@ namespace hm
 		void Update();
 		void Shutdown();
 
-		Component& CreateComponent(Component::Type componentType);
+		Component& CreateComponent(Component::Type type);
+		Component& GetComponent(Component::Type type);
 		Component& GetComponent(const StringAtom& name);
-
+		
 
 		bool RegisterVariable(const StringAtom& name, Variant value)
 		{

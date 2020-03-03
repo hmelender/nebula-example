@@ -34,12 +34,12 @@ hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name)
 	return *e;
 }
 
-hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name, const Resources::ResourceName& uri, const StringAtom& tag)
+hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name, const StringAtom& uri, const StringAtom& tag)
 {
 	return CreateEntity(name, uri, tag, point(0.0f, 0.0f, 0.0f));
 }
 
-hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name, const Resources::ResourceName& uri, const StringAtom& tag, const Math::point& position)
+hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name, const StringAtom& uri, const StringAtom& tag, const Math::point& position)
 {
 	Entity* e = Entity::Create();
 	e->m_Name = name;

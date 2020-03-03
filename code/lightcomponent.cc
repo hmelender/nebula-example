@@ -51,7 +51,7 @@ void hm::LightComponent::SetupPointLight(const Math::float4& color, float intens
 	TransformComponent& t = m_Entity->GetComponent("transform");
 	t.SetPosition(position);
 	t.m_Transformable = this;
-	Lighting::LightContext::SetupPointLight(m_LightId, color, intensity, *(t.m_Matrix), range, castShadows);
+	Lighting::LightContext::SetupPointLight(m_LightId, color, intensity, t.m_Matrix, range, castShadows);
 
 }
 

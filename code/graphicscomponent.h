@@ -36,8 +36,8 @@ namespace hm
 
 		GraphicsComponent& operator=(const Component& rhs);
 
-		void LoadModel(const Resources::ResourceName& uri, const StringAtom& tag);
-		void ChangeModel(const Resources::ResourceName& uri, const StringAtom& tag);
+		void LoadModel(const StringAtom& uri, const StringAtom& tag);
+		void ChangeModel(const StringAtom& uri, const StringAtom& tag);
 	};
 
 }

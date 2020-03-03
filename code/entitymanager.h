@@ -7,6 +7,8 @@
 
 namespace hm
 {
+	class MessageDispatcher;
+
 	class EntityManager: public MessageDispatcher
 	{
 	private:
@@ -19,8 +21,8 @@ namespace hm
 	public:
 		static EntityManager& GetInstance();
 		Entity& CreateEntity(const StringAtom& name);
-		Entity& CreateEntity(const StringAtom& name, const Resources::ResourceName& uri, const StringAtom& tag);
-		Entity& CreateEntity(const StringAtom& name, const Resources::ResourceName& uri, const StringAtom& tag, const Math::point& position);
+		Entity& CreateEntity(const StringAtom& name, const StringAtom& uri, const StringAtom& tag);
+		Entity& CreateEntity(const StringAtom& name, const StringAtom& uri, const StringAtom& tag, const Math::point& position);
 		Entity& CreatePointLight(const StringAtom& name, const Math::float4& color, float intensity, const Math::point& position, float range, bool castShadows);
 		Entity& GetEntity(const StringAtom& name);
 		void RemoveEntity(const StringAtom& name);

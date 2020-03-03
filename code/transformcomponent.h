@@ -25,12 +25,17 @@ namespace hm
 		friend class LightComponent;
 	protected:
 
+		point m_Position;
 		float4 m_Velocity;
-		transform44 m_Transform;
-		const matrix44* m_Matrix;
+		float4 m_Scale;
+
+		point m_Pivot;
+		quaternion m_Rotation;
+		matrix44 m_Matrix;
 		Component* m_Transformable;
 
 		bool m_InMotion;
+		bool m_UpdateMatrix;
 	public:
 		enum class Axis
 		{
@@ -51,7 +56,7 @@ namespace hm
 		void SetVelocity(const float4& vector);
 		void SetRotation(const quaternion& rotation);
 		void SetRotationEuler(float x, float y, float z);
-		void RotateAxis(float4 axis, float angle);
+		void RotateAxis(const float4& axis, float angle);
 		void RotateAxis(Axis axis, float angle);
 		void SetScale(float scale);
 		void SetScale(const float4& scale);

@@ -44,11 +44,11 @@ void hm::Entity::Shutdown()
 	}
 }
 
-hm::Component& hm::Entity::CreateComponent(hm::Component::Type componentType)
+hm::Component& hm::Entity::CreateComponent(hm::Component::Type type)
 {
 	hm::Component* c = nullptr;
 	const char* name = "none";
-	switch (componentType)
+	switch (type)
 	{
 	case hm::Component::Type::TRANSFORM: {
 		c = hm::TransformComponent::Create();
@@ -76,6 +76,15 @@ hm::Component& hm::Entity::CreateComponent(hm::Component::Type componentType)
 		if (m_Initialized) c->Init();
 	}
 	return *c;
+}
+
+hm::Component& hm::Entity::GetComponent(Component::Type type)
+{
+	for (Component* c : m_Components) {
+		if (c->m_Type == type)
+			return *c;
+	}
+	return *static_cast<Component*>(nullptr); // ehh
 }
 
 hm::Component& hm::Entity::GetComponent(const StringAtom& name)
