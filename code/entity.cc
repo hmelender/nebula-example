@@ -102,3 +102,30 @@ void hm::Entity::ReceiveMessage(const Message& message)
 	if (message.m_MessageType == Message::Type::DESTROY)
 		hm::EntityManager::GetInstance().RemoveEntity(*this);
 }
+
+void hm::Entity::Serialize(Serializer& writer)
+{
+	writer.AddNode("entity");
+	writer.AddData<StringAtom>("name", m_Name);
+	writer.AddNode("components");
+	for (Component* c : m_Components) {
+		c->Serialize(writer);
+	}
+	writer.EndNode();
+	writer.EndNode();
+}
+
+void hm::Entity::Deserialize(Serializer& reader)
+{
+	reader.Child(); // name
+	reader.Next(); // components
+	reader.Child(); // first component
+
+	do {
+		Util::String componentName = reader.GetName();
+		Component::Type componentType = Component::TypeFromString(componentName.AsCharPtr());
+		Component& c = CreateComponent(componentType);
+		c.Deserialize(reader);
+	} while (reader.Next());
+	Init();
+}

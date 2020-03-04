@@ -63,8 +63,11 @@ hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name, const String
 hm::Entity& hm::EntityManager::CreatePointLight(const StringAtom& name, const Math::float4& color, float intensity, const Math::point& position, float range, bool castShadows)
 {
 	Entity& e = CreateEntity(name);
+	TransformComponent& t = e.GetComponent(Component::Type::TRANSFORM);
+	t.SetPosition(position);
+
 	LightComponent& l = e.CreateComponent(Component::Type::LIGHT);
-	l.SetupPointLight(color, intensity, position, range, castShadows);
+	l.SetupPointLight(color, intensity, range, castShadows);
 	return e;
 }
 
@@ -95,6 +98,39 @@ void hm::EntityManager::RemoveEntity(Entity& entity)
 	RemoveEntity(entity.m_Name);
 }
 
+void hm::EntityManager::SaveSceneState(const char* file)
+{
+	m_Serializer.BeginWrite(file);
+	m_Serializer.AddNode("scene");
+
+	for (Entity* e : m_Entities) {
+		e->Serialize(m_Serializer);
+	}
+	m_Serializer.EndNode();
+
+	m_Serializer.End();
+}
+
+void hm::EntityManager::LoadSceneState(const char* file)
+{
+	Shutdown();
+
+	m_Serializer.BeginRead(file);
+	m_Serializer.Child();
+	m_Serializer.Child();
+
+	do {
+		Util::String name = m_Serializer.GetName();
+		m_Serializer.GetData("name", name);
+		Entity& e = CreateEntity(name);
+		e.Deserialize(m_Serializer);
+
+	} while (m_Serializer.Next());
+
+	m_Serializer.End();
+
+}
+
 void hm::EntityManager::Init()
 {
 	for (Entity* e : m_Entities) {
@@ -117,4 +153,6 @@ void hm::EntityManager::Shutdown()
 	for (Entity* e : m_Entities) {
 		e->Shutdown();
 	}
+	m_Entities.Clear();
+	m_EntityTable.Clear();
 }

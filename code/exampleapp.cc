@@ -303,6 +303,7 @@ ExampleApplication::Run()
     placeholderTransform.SetPosition(Math::point(0.0f, 2.0f, 0.0f));
     placeholderTransform.SetPivot(Math::point(5.0f, 0.0f, 0.0f));
 
+    bool saveScene = false;
 
     while (run && !inputServer->IsQuitRequested())
     {   
@@ -342,12 +343,19 @@ ExampleApplication::Run()
             hm::Message msg(placeholder, hm::Message::Type::DESTROY);
             hm::MessageDispatcher::DeliverMessage(msg);
             timer = -1.0f;
+            saveScene = true;
         }
 
         if (timer < 5.0f && timer >= 0.0f)
             timer += gfxServer->GetFrameTime();
 
 		entityManager.Update();
+
+        if (saveScene) {
+            //entityManager.SaveSceneState("save_file.dat");
+            saveScene = false;
+            entityManager.LoadSceneState("save_file.dat");
+        }
 
 
         this->gfxServer->RenderViews();

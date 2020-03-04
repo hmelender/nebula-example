@@ -4,6 +4,7 @@
 #include "math/point.h"
 #include "util/stringatom.h"
 #include "message.h"
+#include "serializer.h"
 
 namespace hm
 {
@@ -16,6 +17,8 @@ namespace hm
 		Array<Entity*> m_Entities;
 		HashTable<StringAtom, IndexT> m_EntityTable;
 		bool m_Initialized;
+
+		Serializer m_Serializer;
 	protected:
 		EntityManager();
 	public:
@@ -27,6 +30,9 @@ namespace hm
 		Entity& GetEntity(const StringAtom& name);
 		void RemoveEntity(const StringAtom& name);
 		void RemoveEntity(Entity& entity);
+
+		void SaveSceneState(const char* file);
+		void LoadSceneState(const char* file);
 		void Init();
 		void Update();
 		void Shutdown();

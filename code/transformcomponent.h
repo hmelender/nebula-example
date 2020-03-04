@@ -18,7 +18,7 @@ namespace hm
 	using Math::quaternion;
 	using Core::RefCounted;
 
-	class TransformComponent : public Component, public RefCounted
+	class TransformComponent : public Component, public RefCounted, public ISerializable
 	{
 		__DeclareClass(hm::TransformComponent);
 		friend class GraphicsComponent;
@@ -26,11 +26,11 @@ namespace hm
 	protected:
 
 		point m_Position;
-		float4 m_Velocity;
 		float4 m_Scale;
-
-		point m_Pivot;
 		quaternion m_Rotation;
+
+		float4 m_Velocity;
+		point m_Pivot;
 		matrix44 m_Matrix;
 		Component* m_Transformable;
 
@@ -62,6 +62,9 @@ namespace hm
 		void SetScale(const float4& scale);
 		void SetScale(float x, float y, float z);
 		void SetPivot(const point& position);
+
+		void Serialize(Serializer& writer) override;
+		void Deserialize(Serializer& reader) override;
 	};
 
 }

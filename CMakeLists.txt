@@ -32,6 +32,8 @@ nebula_begin_app(nebula-env windowed)
 			message.cc
 			message.h
 			variant_ext.h
+			serializer.h
+			serializer.cc
 			pybind11.h
 			binding.cc
         )

@@ -10,6 +10,10 @@ namespace hm
 
 hm::TransformComponent::TransformComponent() : hm::Component(Type::TRANSFORM), m_InMotion(false), m_UpdateMatrix(false), m_Transformable(nullptr)
 {
+	m_Matrix = matrix44::identity();
+	m_Velocity = float4::zerovector();
+	m_Rotation = quaternion::identity();
+	m_Scale = vector(1.0f);
 }
 
 void hm::TransformComponent::Init()
@@ -17,11 +21,8 @@ void hm::TransformComponent::Init()
 	if (m_Initialized)
 		return;
 
-	m_Velocity = float4::zerovector();
-	m_Rotation = quaternion::identity();
-	m_Scale = vector(1.0f);
-
 	m_Initialized = true;
+	m_UpdateMatrix = true;
 }
 
 void hm::TransformComponent::Update()
@@ -140,5 +141,26 @@ void hm::TransformComponent::SetScale(float x, float y, float z)
 void hm::TransformComponent::SetPivot(const point& position)
 {
 	m_Pivot = position;
+	m_UpdateMatrix = true;
+}
+
+void hm::TransformComponent::Serialize(Serializer& writer)
+{
+	writer.AddNode("transform");
+	writer.AddData("position", m_Position);
+	writer.AddData("scale", m_Scale);
+	writer.AddData("rotation", m_Rotation);
+	writer.AddData("velocity", m_Velocity);
+	writer.AddData("pivot", m_Pivot);
+	writer.EndNode();
+}
+
+void hm::TransformComponent::Deserialize(Serializer& reader)
+{
+	reader.GetData("position", m_Position);
+	reader.GetData("scale", m_Scale);
+	reader.GetData("rotation", m_Rotation);
+	reader.GetData("velocity", m_Velocity);
+	reader.GetData("pivot", m_Pivot);
 	m_UpdateMatrix = true;
 }

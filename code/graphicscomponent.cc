@@ -48,10 +48,12 @@ hm::GraphicsComponent& hm::GraphicsComponent::operator=(const hm::Component& rhs
 
 void hm::GraphicsComponent::LoadModel(const StringAtom& uri, const StringAtom& tag)
 {
-	TransformComponent& t = m_Entity->GetComponent("transform");
+	TransformComponent& t = m_Entity->GetComponent(Type::TRANSFORM);
 	t.m_Transformable = this;
 
-	ModelContext::Setup(m_GraphicsId, uri, tag);
+	m_ModelUri = uri;
+	m_ModelTag = tag;
+	ModelContext::Setup(m_GraphicsId, m_ModelUri, m_ModelTag);
 	ModelContext::SetTransform(m_GraphicsId, t.m_Matrix);
 	ObservableContext::Setup(m_GraphicsId, VisibilityEntityType::Model);
 
@@ -59,5 +61,26 @@ void hm::GraphicsComponent::LoadModel(const StringAtom& uri, const StringAtom& t
 
 void hm::GraphicsComponent::ChangeModel(const StringAtom& uri, const StringAtom& tag)
 {
-	ModelContext::ChangeModel(m_GraphicsId, uri, tag);
+	m_ModelUri = uri;
+	m_ModelTag = tag;
+	ModelContext::ChangeModel(m_GraphicsId, m_ModelUri, m_ModelTag);
+}
+
+void hm::GraphicsComponent::Serialize(Serializer& writer)
+{
+	writer.AddNode("graphics");
+	writer.AddData("model_uri", m_ModelUri);
+	writer.AddData("model_tag", m_ModelTag);
+	writer.EndNode();
+}
+
+void hm::GraphicsComponent::Deserialize(Serializer& reader)
+{
+	StringAtom uri;
+	StringAtom tag;
+	reader.GetData("model_uri", uri);
+	reader.GetData("model_tag", tag);
+	LoadModel(uri, tag);
+	m_Initialized = false;
+	Init();
 }

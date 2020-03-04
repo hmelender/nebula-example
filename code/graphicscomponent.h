@@ -19,12 +19,14 @@ namespace hm
 	using Util::StringAtom;
 	using Core::RefCounted;
 
-	class GraphicsComponent : public Component, public RefCounted
+	class GraphicsComponent : public Component, public RefCounted, public ISerializable
 	{
 		__DeclareClass(hm::GraphicsComponent);
 		friend class TransformComponent;
 	protected:
 		GraphicsEntityId m_GraphicsId;
+		StringAtom m_ModelUri;
+		StringAtom m_ModelTag;
 
 		void SetTransform(const Math::matrix44& matrix);
 	public:
@@ -38,6 +40,9 @@ namespace hm
 
 		void LoadModel(const StringAtom& uri, const StringAtom& tag);
 		void ChangeModel(const StringAtom& uri, const StringAtom& tag);
+
+		void Serialize(Serializer& writer) override;
+		void Deserialize(Serializer& reader) override;
 	};
 
 }

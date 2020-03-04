@@ -10,6 +10,7 @@
 #include "math/float4.h"
 #include "component.h"
 #include "message.h"
+#include "serializer.h"
 
 namespace hm
 {
@@ -20,7 +21,7 @@ namespace hm
 	using Math::matrix44;
 	using Math::float4;
 
-	class Entity: public RefCounted, public IMessageHandler
+	class Entity: public RefCounted, public IMessageHandler, public ISerializable
 	{
 		friend class EntityManager;
 		__DeclareClass(hm::Entity);
@@ -62,7 +63,8 @@ namespace hm
 
 		void ReceiveMessage(const hm::Message& message);
 
-	private:
+		void Serialize(Serializer& writer);
+		void Deserialize(Serializer& reader);
 
 	};
 }
