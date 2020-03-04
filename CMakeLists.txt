@@ -29,6 +29,8 @@ nebula_begin_app(nebula-env windowed)
 			transformcomponent.h
 			lightcomponent.cc
 			lightcomponent.h
+			charactercomponent.cc
+			charactercomponent.h
 			message.cc
 			message.h
 			variant_ext.h

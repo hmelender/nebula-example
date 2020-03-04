@@ -3,6 +3,7 @@
 #include "transformcomponent.h"
 #include "graphicscomponent.h"
 #include "lightcomponent.h"
+#include "charactercomponent.h"
 #include "pybind11.h"
 #include "message.h"
 
@@ -65,6 +66,11 @@ hm::Component& hm::Entity::CreateComponent(hm::Component::Type type)
 		name = "light";
 	}
 		break;
+	case hm::Component::Type::CHARACTER: {
+		c = hm::CharacterComponent::Create();
+		name = "character";
+	}
+		break;
 	}
 
 	if (c != nullptr) {
@@ -124,8 +130,14 @@ void hm::Entity::Deserialize(Serializer& reader)
 	do {
 		Util::String componentName = reader.GetName();
 		Component::Type componentType = Component::TypeFromString(componentName.AsCharPtr());
-		Component& c = CreateComponent(componentType);
-		c.Deserialize(reader);
+		if (componentType == Component::Type::TRANSFORM) {
+			Component& c = GetComponent(Component::Type::TRANSFORM);
+			c.Deserialize(reader);
+		}
+		else {
+			Component& c = CreateComponent(componentType);
+			c.Deserialize(reader);
+		}
 	} while (reader.Next());
 	Init();
 }

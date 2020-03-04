@@ -37,6 +37,7 @@
 #include "entity.h"
 #include "graphicscomponent.h"
 #include "transformcomponent.h"
+#include "charactercomponent.h"
 
 
 #ifdef __WIN32__
@@ -285,25 +286,32 @@ ExampleApplication::Run()
 
     hm::EntityManager& entityManager = hm::EntityManager::GetInstance();
 
-	entityManager.CreateEntity("ground", "mdl:environment/Groundplane.n3", "Examples");
-	entityManager.CreateEntity("trees", "mdl:Vegetation/Trees_01.n3", "Examples");
-	entityManager.CreateEntity("catapult", "mdl:Units/Unit_Catapult.n3", "Examples");
+    entityManager.CreateEntity("ground", "mdl:environment/Groundplane.n3", "Examples");
+    entityManager.CreateEntity("trees", "mdl:Vegetation/Trees_01.n3", "Examples");
+    entityManager.CreateEntity("catapult", "mdl:Units/Unit_Catapult.n3", "Examples");
     entityManager.CreateEntity("placeholder", "mdl:system/placeholder.n3", "Examples");
+
+    hm::Entity& character = entityManager.CreateCharacter("footman", "mdl:Units/Unit_Footman.n3", "ske:Units/Unit_Footman.nsk3", "ani:Units/Unit_Footman.nax3", "Examples", Math::point(2.0f, 0.0f, -20.0f));
     entityManager.CreatePointLight("light", Math::float4(1.0f, 1.0f, 1.0f, 1.0f), 10.0f, Math::point(1.0f, 3.5f, 1.0f), 100.0f, true);
+    hm::CharacterComponent& characterComp = character.GetComponent(hm::Component::Type::CHARACTER);
+    characterComp.PlayAnimation(0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
+    hm::TransformComponent& characterTransform = character.GetComponent(hm::Component::Type::TRANSFORM);
 
 	entityManager.Init();
 
-	hm::Entity& catapult = entityManager.GetEntity("catapult");
-	hm::TransformComponent& catapultTransform = catapult.GetComponent("transform");
-
+    hm::Entity& catapult = entityManager.GetEntity("catapult");
+    hm::TransformComponent& catapultTransform = catapult.GetComponent("transform");
+    
     hm::Entity& placeholder = entityManager.GetEntity("placeholder");
     hm::TransformComponent& placeholderTransform = placeholder.GetComponent("transform");
     float timer = 0.0f;
-
+    
     placeholderTransform.SetPosition(Math::point(0.0f, 2.0f, 0.0f));
     placeholderTransform.SetPivot(Math::point(5.0f, 0.0f, 0.0f));
-
+    characterTransform.SetVelocity(Math::float4(0.0f, 0.0f, 0.1f, 0.0f));
+    
     bool saveScene = false;
+    bool loadScene = false;
 
     while (run && !inputServer->IsQuitRequested())
     {   
@@ -337,30 +345,44 @@ ExampleApplication::Run()
         
         // put game code which need visibility data here
 
-		catapultTransform.RotateAxis(hm::TransformComponent::Axis::Y, 0.5f * gfxServer->GetFrameTime());
-        placeholderTransform.RotateAxis(hm::TransformComponent::Axis::Y, -1.0f * gfxServer->GetFrameTime());
-        if (timer > 5.0f) {
-            hm::Message msg(placeholder, hm::Message::Type::DESTROY);
-            hm::MessageDispatcher::DeliverMessage(msg);
-            timer = -1.0f;
-            saveScene = true;
-        }
-
-        if (timer < 5.0f && timer >= 0.0f)
-            timer += gfxServer->GetFrameTime();
-
-		entityManager.Update();
-
-        if (saveScene) {
-            //entityManager.SaveSceneState("save_file.dat");
-            saveScene = false;
-            entityManager.LoadSceneState("save_file.dat");
-        }
-
-
         this->gfxServer->RenderViews();
 
         // put game code which needs rendering to be done (animation etc) here
+
+        if (&catapultTransform != nullptr)
+            catapultTransform.RotateAxis(hm::TransformComponent::Axis::Y, 0.5f * gfxServer->GetFrameTime());
+        if (&placeholderTransform != nullptr)
+            placeholderTransform.RotateAxis(hm::TransformComponent::Axis::Y, -1.0f * gfxServer->GetFrameTime());
+
+        entityManager.Update();
+
+        if (saveScene) {
+            entityManager.SaveSceneState("save_file.dat");
+            saveScene = false;
+            
+        }
+
+        if (loadScene) {
+            loadScene = false;
+            entityManager.LoadSceneState("save_file.dat");
+        }
+
+        if (timer > 3.0f && timer < 4.00f && !saveScene) {
+            // hm::Message msg(placeholder, hm::Message::Type::DESTROY);
+            // hm::MessageDispatcher::DeliverMessage(msg);
+            timer = 4.0f;
+            saveScene = true;
+        }
+
+        if (timer > 10.0f) {
+            timer = -1.0f;
+            loadScene = true;
+        }
+
+        if (timer < 10.0f && timer >= 0.0f)
+            timer += gfxServer->GetFrameTime();
+
+
         this->gfxServer->EndViews();
 
         // do stuff after rendering is done
@@ -368,7 +390,7 @@ ExampleApplication::Run()
 
         // force wait immediately
         WindowPresent(wnd, frameIndex);
-        if (this->inputServer->GetDefaultKeyboard()->KeyPressed(Input::Key::Escape)) run = false;        
+        if (this->inputServer->GetDefaultKeyboard()->KeyPressed(Input::Key::Escape)) run = false;       
                 
         if (this->inputServer->GetDefaultKeyboard()->KeyPressed(Input::Key::LeftMenu))
             this->UpdateCamera();

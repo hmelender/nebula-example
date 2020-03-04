@@ -81,6 +81,4 @@ void hm::GraphicsComponent::Deserialize(Serializer& reader)
 	reader.GetData("model_uri", uri);
 	reader.GetData("model_tag", tag);
 	LoadModel(uri, tag);
-	m_Initialized = false;
-	Init();
 }

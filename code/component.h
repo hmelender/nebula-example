@@ -8,6 +8,7 @@ namespace hm
 	class TransformComponent;
 	class GraphicsComponent;
 	class LightComponent;
+	class CharacterComponent;
 	class Message;
 
 	class Component
@@ -32,8 +33,9 @@ namespace hm
 		virtual void SetTransform(const Math::matrix44& matrix);
 
 		operator hm::TransformComponent&();
-		operator hm::GraphicsComponent& ();
-		operator hm::LightComponent& ();
+		operator hm::GraphicsComponent&();
+		operator hm::LightComponent&();
+		operator hm::CharacterComponent&();
 
 		static Type TypeFromString(const char* str) {
 			std::string strn(str);

@@ -26,6 +26,7 @@ namespace hm
 		Entity& CreateEntity(const StringAtom& name);
 		Entity& CreateEntity(const StringAtom& name, const StringAtom& uri, const StringAtom& tag);
 		Entity& CreateEntity(const StringAtom& name, const StringAtom& uri, const StringAtom& tag, const Math::point& position);
+		Entity& CreateCharacter(const StringAtom& name, const StringAtom& modelUri, const StringAtom& skeletonUri, const StringAtom& animationUri, const StringAtom& tag, const Math::point& position);
 		Entity& CreatePointLight(const StringAtom& name, const Math::float4& color, float intensity, const Math::point& position, float range, bool castShadows);
 		Entity& GetEntity(const StringAtom& name);
 		void RemoveEntity(const StringAtom& name);

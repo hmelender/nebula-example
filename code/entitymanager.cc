@@ -1,6 +1,7 @@
 #include "entitymanager.h"
 #include "transformcomponent.h"
 #include "graphicscomponent.h"
+#include "charactercomponent.h"
 #include "lightcomponent.h"
 
 hm::EntityManager::EntityManager() : m_Initialized(false)
@@ -56,6 +57,28 @@ hm::Entity& hm::EntityManager::CreateEntity(const StringAtom& name, const String
 
 	t.SetPosition(position);
 	g.LoadModel(uri, tag);
+
+	return *e;
+}
+
+hm::Entity& hm::EntityManager::CreateCharacter(const StringAtom& name, const StringAtom& modelUri, const StringAtom& skeletonUri, const StringAtom& animationUri, const StringAtom& tag, const Math::point& position)
+{
+	Entity* e = Entity::Create();
+	e->m_Name = name;
+	TransformComponent& t = e->CreateComponent(Component::Type::TRANSFORM);
+	GraphicsComponent& g = e->CreateComponent(Component::Type::GRAPHICS);
+	CharacterComponent& c = e->CreateComponent(Component::Type::CHARACTER);
+
+	size_t s = m_Entities.Size();
+	m_Entities.Append(e);
+
+	m_EntityTable.Add(name, s);
+
+	e->Init();
+
+	t.SetPosition(position);
+	g.LoadModel(modelUri, tag);
+	c.LoadCharacter(skeletonUri, animationUri, tag);
 
 	return *e;
 }

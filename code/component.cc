@@ -2,6 +2,7 @@
 #include "transformcomponent.h"
 #include "graphicscomponent.h"
 #include "lightcomponent.h"
+#include "charactercomponent.h"
 #include "message.h"
 
 hm::Component::Component(Type type) : m_Entity(nullptr), m_Initialized(false), m_Type(type)
@@ -26,6 +27,11 @@ hm::Component::operator hm::GraphicsComponent& ()
 hm::Component::operator hm::LightComponent& ()
 {
 	return *dynamic_cast<hm::LightComponent*>(this);
+}
+
+hm::Component::operator hm::CharacterComponent& ()
+{
+	return *dynamic_cast<hm::CharacterComponent*>(this);
 }
 
 

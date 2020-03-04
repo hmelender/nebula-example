@@ -6,6 +6,7 @@
 #include "graphics/graphicsentity.h"
 #include "models/model.h"
 #include "models/modelcontext.h"
+#include "characters/charactercontext.h"
 #include "visibility/visibilitycontext.h"
 #include "component.h"
 #include "math/matrix44.h"
@@ -19,28 +20,39 @@ namespace hm
 	using Util::StringAtom;
 	using Core::RefCounted;
 
-	class GraphicsComponent : public Component, public RefCounted, public ISerializable
+	class CharacterComponent : public Component, public RefCounted, public ISerializable
 	{
-		__DeclareClass(hm::GraphicsComponent);
+		__DeclareClass(hm::CharacterComponent);
 		friend class TransformComponent;
-		friend class CharacterComponent;
 	protected:
 		GraphicsEntityId m_GraphicsId;
-		StringAtom m_ModelUri;
-		StringAtom m_ModelTag;
+		StringAtom m_SkeletonUri;
+		StringAtom m_AnimationUri;
+		StringAtom m_CharacterTag;
+		bool m_AnimPlaying;
 
-		void SetTransform(const Math::matrix44& matrix);
 	public:
-		GraphicsComponent();
+		CharacterComponent();
 		void Init();
 		void Update();
 		void Shutdown();
 		void ReceiveMessage(const Message& message);
 
-		GraphicsComponent& operator=(const Component& rhs);
+		CharacterComponent& operator=(const Component& rhs);
 
-		void LoadModel(const StringAtom& uri, const StringAtom& tag);
-		void ChangeModel(const StringAtom& uri, const StringAtom& tag);
+		void LoadCharacter(const StringAtom& skeletonUri, const StringAtom& animationUri, const StringAtom& tag);
+		void PlayAnimation(
+			const IndexT clipIndex,
+			const IndexT track,
+			const Characters::EnqueueMode mode,
+			const float weight = 1.0f,
+			const SizeT loopCount = 1,
+			const float startTime = 0.0f,
+			const float fadeIn = 0.0f,
+			const float fadeOut = 0.0f,
+			const float timeOffset = 0.0f,
+			const float timeFactor = 1.0f
+		);
 
 		void Serialize(Serializer& writer) override;
 		void Deserialize(Serializer& reader) override;

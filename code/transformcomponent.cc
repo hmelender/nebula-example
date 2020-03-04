@@ -30,8 +30,11 @@ void hm::TransformComponent::Update()
 	if (m_InMotion) {
 		m_Position += m_Velocity;
 
-		if (!m_UpdateMatrix)
+		if (!m_UpdateMatrix) {
 			m_Matrix.translate(m_Velocity);
+			if (m_Transformable != nullptr)
+				m_Transformable->SetTransform(m_Matrix);
+		}
 	}
 
 	if (m_UpdateMatrix) {
