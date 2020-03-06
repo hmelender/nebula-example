@@ -112,7 +112,7 @@ namespace hm
 		template <>
 		void GetData(const char* key, Math::quaternion& target) {
 			if (m_Reading) {
-				target = m_Reader->GetFloat4(key);
+				target.set(m_Reader->GetFloat4(key));
 			}
 		};
 

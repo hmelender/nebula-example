@@ -23,6 +23,8 @@ namespace hm
 		EntityManager();
 	public:
 		static EntityManager& GetInstance();
+		static float frameDelta;
+
 		Entity& CreateEntity(const StringAtom& name);
 		Entity& CreateEntity(const StringAtom& name, const StringAtom& uri, const StringAtom& tag);
 		Entity& CreateEntity(const StringAtom& name, const StringAtom& uri, const StringAtom& tag, const Math::point& position);

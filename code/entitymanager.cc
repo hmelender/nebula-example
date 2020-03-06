@@ -11,6 +11,8 @@ hm::EntityManager::EntityManager() : m_Initialized(false)
 
 hm::EntityManager* hm::EntityManager::s_Instance = nullptr;
 
+float hm::EntityManager::frameDelta = 0.0f;
+
 hm::EntityManager& hm::EntityManager::GetInstance()
 {
 	if (s_Instance == nullptr) {

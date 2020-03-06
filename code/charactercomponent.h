@@ -31,6 +31,17 @@ namespace hm
 		StringAtom m_CharacterTag;
 		bool m_AnimPlaying;
 
+		IndexT m_ClipIndex;
+		IndexT m_Track;
+		Characters::EnqueueMode m_Mode;
+		float m_Weight;
+		SizeT m_LoopCount;
+		float m_StartTime;
+		float m_FadeIn;
+		float m_FadeOut;
+		float m_TimeOffset;
+		float m_TimeFactor;
+
 	public:
 		CharacterComponent();
 		void Init();

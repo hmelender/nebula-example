@@ -38,6 +38,7 @@
 #include "graphicscomponent.h"
 #include "transformcomponent.h"
 #include "charactercomponent.h"
+#include "motioncomponent.h"
 
 
 #ifdef __WIN32__
@@ -293,22 +294,29 @@ ExampleApplication::Run()
 
     hm::Entity& character = entityManager.CreateCharacter("footman", "mdl:Units/Unit_Footman.n3", "ske:Units/Unit_Footman.nsk3", "ani:Units/Unit_Footman.nax3", "Examples", Math::point(2.0f, 0.0f, -20.0f));
     entityManager.CreatePointLight("light", Math::float4(1.0f, 1.0f, 1.0f, 1.0f), 10.0f, Math::point(1.0f, 3.5f, 1.0f), 100.0f, true);
+
     hm::CharacterComponent& characterComp = character.GetComponent(hm::Component::Type::CHARACTER);
     characterComp.PlayAnimation(0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
     hm::TransformComponent& characterTransform = character.GetComponent(hm::Component::Type::TRANSFORM);
+    hm::MotionComponent& characterMotion = character.CreateComponent(hm::Component::Type::MOTION);
 
 	entityManager.Init();
 
     hm::Entity& catapult = entityManager.GetEntity("catapult");
     hm::TransformComponent& catapultTransform = catapult.GetComponent("transform");
+    hm::MotionComponent& catapultMotion = catapult.CreateComponent(hm::Component::Type::MOTION);
+    catapultMotion.SetAngularVelocity(Math::float4(0.0f, 1.2f, 0.0f, 0.0f));
     
     hm::Entity& placeholder = entityManager.GetEntity("placeholder");
     hm::TransformComponent& placeholderTransform = placeholder.GetComponent("transform");
+    hm::MotionComponent& placeholderMotion = placeholder.CreateComponent(hm::Component::Type::MOTION);
+    placeholderMotion.SetAngularVelocity(Math::float4(0.0f, -1.0f, 0.0f, 0.0f));
+
     float timer = 0.0f;
     
     placeholderTransform.SetPosition(Math::point(0.0f, 2.0f, 0.0f));
     placeholderTransform.SetPivot(Math::point(5.0f, 0.0f, 0.0f));
-    characterTransform.SetVelocity(Math::float4(0.0f, 0.0f, 0.1f, 0.0f));
+    characterMotion.SetVelocity(Math::float4(0.0f, 0.0f, 4.0f, 0.0f));
     
     bool saveScene = false;
     bool loadScene = false;
@@ -349,11 +357,7 @@ ExampleApplication::Run()
 
         // put game code which needs rendering to be done (animation etc) here
 
-        if (&catapultTransform != nullptr)
-            catapultTransform.RotateAxis(hm::TransformComponent::Axis::Y, 0.5f * gfxServer->GetFrameTime());
-        if (&placeholderTransform != nullptr)
-            placeholderTransform.RotateAxis(hm::TransformComponent::Axis::Y, -1.0f * gfxServer->GetFrameTime());
-
+        hm::EntityManager::frameDelta = this->gfxServer->GetFrameTime();
         entityManager.Update();
 
         if (saveScene) {

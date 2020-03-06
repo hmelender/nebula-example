@@ -9,6 +9,7 @@ namespace hm
 	class GraphicsComponent;
 	class LightComponent;
 	class CharacterComponent;
+	class MotionComponent;
 	class Message;
 
 	class Component
@@ -19,7 +20,7 @@ namespace hm
 		bool m_Initialized;
 	public:
 		enum class Type {
-			NONE, TRANSFORM, GRAPHICS, LIGHT, CHARACTER
+			NONE, TRANSFORM, GRAPHICS, LIGHT, CHARACTER, MOTION
 		};
 		const Type m_Type;
 
@@ -36,6 +37,7 @@ namespace hm
 		operator hm::GraphicsComponent&();
 		operator hm::LightComponent&();
 		operator hm::CharacterComponent&();
+		operator hm::MotionComponent& ();
 
 		static Type TypeFromString(const char* str) {
 			std::string strn(str);
@@ -47,6 +49,7 @@ namespace hm
 			else if (strn.compare("GRAPHICS") == 0)		return Type::GRAPHICS;
 			else if (strn.compare("LIGHT") == 0)		return Type::LIGHT;
 			else if (strn.compare("CHARACTER") == 0)	return Type::CHARACTER;
+			else if (strn.compare("MOTION") == 0)		return Type::MOTION;
 			else										return Type::NONE;
 		};
 

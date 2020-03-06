@@ -29,12 +29,10 @@ namespace hm
 		float4 m_Scale;
 		quaternion m_Rotation;
 
-		float4 m_Velocity;
 		point m_Pivot;
 		matrix44 m_Matrix;
 		Component* m_Transformable;
 
-		bool m_InMotion;
 		bool m_UpdateMatrix;
 	public:
 		enum class Axis
@@ -53,8 +51,8 @@ namespace hm
 		void SetPosition(float x, float y, float z);
 		void Translate(const float4& vector);
 		void Translate(float x, float y, float z);
-		void SetVelocity(const float4& vector);
 		void SetRotation(const quaternion& rotation);
+		void Rotate(const quaternion& rotation);
 		void SetRotationEuler(float x, float y, float z);
 		void RotateAxis(const float4& axis, float angle);
 		void RotateAxis(Axis axis, float angle);

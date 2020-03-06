@@ -4,6 +4,7 @@
 #include "graphicscomponent.h"
 #include "lightcomponent.h"
 #include "charactercomponent.h"
+#include "motioncomponent.h"
 #include "pybind11.h"
 #include "message.h"
 
@@ -69,6 +70,11 @@ hm::Component& hm::Entity::CreateComponent(hm::Component::Type type)
 	case hm::Component::Type::CHARACTER: {
 		c = hm::CharacterComponent::Create();
 		name = "character";
+	}
+		break;
+	case hm::Component::Type::MOTION: {
+		c = hm::MotionComponent::Create();
+		name = "motion";
 	}
 		break;
 	}
