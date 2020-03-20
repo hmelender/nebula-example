@@ -8,8 +8,9 @@
 #include "models/modelcontext.h"
 #include "characters/charactercontext.h"
 #include "visibility/visibilitycontext.h"
-#include "component.h"
 #include "math/matrix44.h"
+#include "component.h"
+
 
 namespace hm
 {

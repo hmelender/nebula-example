@@ -8,9 +8,11 @@
 #include "util/stringatom.h"
 #include "math/matrix44.h"
 #include "math/float4.h"
+
 #include "component.h"
 #include "message.h"
 #include "serializer.h"
+
 
 namespace hm
 {

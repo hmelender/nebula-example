@@ -6,6 +6,7 @@
 #include "math/vector.h"
 #include "math/point.h"
 #include "math/quaternion.h"
+
 #include "component.h"
 
 namespace hm

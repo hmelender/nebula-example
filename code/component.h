@@ -12,6 +12,8 @@ namespace hm
 	class MotionComponent;
 	class Message;
 
+	using Math::matrix44;
+
 	class Component
 	{
 		friend class Entity;
@@ -31,7 +33,7 @@ namespace hm
 		virtual void ReceiveMessage(const Message& message) = 0;
 		virtual void Serialize(Serializer& writer) = 0;
 		virtual void Deserialize(Serializer& reader) = 0;
-		virtual void SetTransform(const Math::matrix44& matrix);
+		virtual void SetTransform(const matrix44& matrix);
 
 		operator hm::TransformComponent&();
 		operator hm::GraphicsComponent&();

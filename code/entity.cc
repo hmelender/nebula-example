@@ -5,7 +5,6 @@
 #include "lightcomponent.h"
 #include "charactercomponent.h"
 #include "motioncomponent.h"
-#include "pybind11.h"
 #include "message.h"
 
 namespace hm

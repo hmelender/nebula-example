@@ -11,8 +11,6 @@ hm::EntityManager::EntityManager() : m_Initialized(false)
 
 hm::EntityManager* hm::EntityManager::s_Instance = nullptr;
 
-float hm::EntityManager::frameDelta = 0.0f;
-
 hm::EntityManager& hm::EntityManager::GetInstance()
 {
 	if (s_Instance == nullptr) {
@@ -154,6 +152,26 @@ void hm::EntityManager::LoadSceneState(const char* file)
 
 	m_Serializer.End();
 
+}
+
+void hm::EntityManager::Load(const char* file)
+{
+	m_Serializer.BeginRead(file);
+	m_Serializer.Child();
+	m_Serializer.Child();
+
+	do {
+		Util::String name = m_Serializer.GetName();
+		m_Serializer.GetData("name", name);
+
+		if (!m_EntityTable.Contains(name)) {
+			Entity& e = CreateEntity(name);
+			e.Deserialize(m_Serializer);
+		}
+
+	} while (m_Serializer.Next());
+
+	m_Serializer.End();
 }
 
 void hm::EntityManager::Init()

@@ -50,7 +50,6 @@ void hm::Serializer::BeginWrite(const char* file)
 	
 	m_File = IO::FileStream::Create();
 	m_File->SetURI(uri);
-	//m_File->Open();
 
 	m_Writer->SetStream(m_File);
 	m_Writer->Open();
@@ -129,7 +128,6 @@ void hm::Serializer::End()
 		m_Writer->Close();
 	}
 
-	//m_File->Close();
 	m_File = nullptr;
 	m_Reader = nullptr;
 	m_Writer = nullptr;

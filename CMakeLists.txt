@@ -42,7 +42,7 @@ nebula_begin_app(nebula-env windowed)
 			variant_ext.h
 			serializer.h
 			serializer.cc
-			pybind11.h
+			binding.h
 			binding.cc
         )
 

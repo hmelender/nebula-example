@@ -33,13 +33,7 @@
 #include "system/nebulasettings.h"
 
 // My includes
-#include "entitymanager.h"
-#include "entity.h"
-#include "graphicscomponent.h"
-#include "transformcomponent.h"
-#include "charactercomponent.h"
-#include "motioncomponent.h"
-
+#include "game.h"
 
 #ifdef __WIN32__
 #include <shellapi.h>
@@ -266,61 +260,11 @@ ExampleApplication::Run()
 
     const Ptr<Input::Keyboard>& keyboard = inputServer->GetDefaultKeyboard();
     const Ptr<Input::Mouse>& mouse = inputServer->GetDefaultMouse();
+
+	hm::Game game;
+
+	game.Start("code/script.py");
     
-    // Register entity to various graphics contexts.
-    // The template parameters are which contexts that the entity should be registered to.
-    // ModelContext takes care of loading models and also handles transforms for instances of models.
-    // Registering an entity to the ObservableContext will allow cameras to observe the entity (adds the entity to visibility culling system)
-
-    // Example animated entity
-    //Graphics::GraphicsEntityId animatedEntity = Graphics::CreateEntity();
-    //// The CharacterContext holds skinned, animated entites and takes care of playing animations etc.
-    //Graphics::RegisterEntity<ModelContext, ObservableContext, Characters::CharacterContext>(animatedEntity);
-    //// create model and move it to the front
-    //ModelContext::Setup(animatedEntity, "mdl:Units/Unit_Footman.n3", "Examples");
-    //ModelContext::SetTransform(animatedEntity, Math::matrix44::translation(Math::point(5, 0, 0)));
-    //ObservableContext::Setup(animatedEntity, VisibilityEntityType::Model);
-    //// Setup the character context instance.
-    //// nsk3 is the skeleton resource, nax3 is the animation resource. nax3 files can contain multiple animation clips
-    //Characters::CharacterContext::Setup(animatedEntity, "ske:Units/Unit_Footman.nsk3", "ani:Units/Unit_Footman.nax3", "Examples");
-    //Characters::CharacterContext::PlayClip(animatedEntity, nullptr, 0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
-
-    hm::EntityManager& entityManager = hm::EntityManager::GetInstance();
-
-    entityManager.CreateEntity("ground", "mdl:environment/Groundplane.n3", "Examples");
-    entityManager.CreateEntity("trees", "mdl:Vegetation/Trees_01.n3", "Examples");
-    entityManager.CreateEntity("catapult", "mdl:Units/Unit_Catapult.n3", "Examples");
-    entityManager.CreateEntity("placeholder", "mdl:system/placeholder.n3", "Examples");
-
-    hm::Entity& character = entityManager.CreateCharacter("footman", "mdl:Units/Unit_Footman.n3", "ske:Units/Unit_Footman.nsk3", "ani:Units/Unit_Footman.nax3", "Examples", Math::point(2.0f, 0.0f, -20.0f));
-    entityManager.CreatePointLight("light", Math::float4(1.0f, 1.0f, 1.0f, 1.0f), 10.0f, Math::point(1.0f, 3.5f, 1.0f), 100.0f, true);
-
-    hm::CharacterComponent& characterComp = character.GetComponent(hm::Component::Type::CHARACTER);
-    characterComp.PlayAnimation(0, 0, Characters::Append, 1.0f, 1, Math::n_rand() * 100.0f, 0.0f, 0.0f, Math::n_rand() * 100.0f);
-    hm::TransformComponent& characterTransform = character.GetComponent(hm::Component::Type::TRANSFORM);
-    hm::MotionComponent& characterMotion = character.CreateComponent(hm::Component::Type::MOTION);
-
-	entityManager.Init();
-
-    hm::Entity& catapult = entityManager.GetEntity("catapult");
-    hm::TransformComponent& catapultTransform = catapult.GetComponent("transform");
-    hm::MotionComponent& catapultMotion = catapult.CreateComponent(hm::Component::Type::MOTION);
-    catapultMotion.SetAngularVelocity(Math::float4(0.0f, 1.2f, 0.0f, 0.0f));
-    
-    hm::Entity& placeholder = entityManager.GetEntity("placeholder");
-    hm::TransformComponent& placeholderTransform = placeholder.GetComponent("transform");
-    hm::MotionComponent& placeholderMotion = placeholder.CreateComponent(hm::Component::Type::MOTION);
-    placeholderMotion.SetAngularVelocity(Math::float4(0.0f, -1.0f, 0.0f, 0.0f));
-
-    float timer = 0.0f;
-    
-    placeholderTransform.SetPosition(Math::point(0.0f, 2.0f, 0.0f));
-    placeholderTransform.SetPivot(Math::point(5.0f, 0.0f, 0.0f));
-    characterMotion.SetVelocity(Math::float4(0.0f, 0.0f, 4.0f, 0.0f));
-    
-    bool saveScene = false;
-    bool loadScene = false;
-
     while (run && !inputServer->IsQuitRequested())
     {   
 #if NEBULA_ENABLE_PROFILING
@@ -342,6 +286,8 @@ ExampleApplication::Run()
         
 		// put game code which doesn't need visibility data or animation here
 
+		game.EarlyUpdate(this->gfxServer->GetFrameTime());
+
         this->gfxServer->BeforeViews();
         
 		this->RenderUI();             
@@ -357,39 +303,13 @@ ExampleApplication::Run()
 
         // put game code which needs rendering to be done (animation etc) here
 
-        hm::EntityManager::frameDelta = this->gfxServer->GetFrameTime();
-        entityManager.Update();
-
-        if (saveScene) {
-            entityManager.SaveSceneState("save_file.dat");
-            saveScene = false;
-            
-        }
-
-        if (loadScene) {
-            loadScene = false;
-            entityManager.LoadSceneState("save_file.dat");
-        }
-
-        if (timer > 3.0f && timer < 4.00f && !saveScene) {
-            // hm::Message msg(placeholder, hm::Message::Type::DESTROY);
-            // hm::MessageDispatcher::DeliverMessage(msg);
-            timer = 4.0f;
-            saveScene = true;
-        }
-
-        if (timer > 10.0f) {
-            timer = -1.0f;
-            loadScene = true;
-        }
-
-        if (timer < 10.0f && timer >= 0.0f)
-            timer += gfxServer->GetFrameTime();
-
+        game.Update();
 
         this->gfxServer->EndViews();
 
         // do stuff after rendering is done
+		game.LateUpdate();
+
         this->gfxServer->EndFrame();
 
         // force wait immediately
@@ -421,8 +341,6 @@ ExampleApplication::Run()
         frameIndex++;             
         this->inputServer->EndFrame();
     }
-
-	entityManager.Shutdown();
 }
 
 //------------------------------------------------------------------------------

@@ -15,6 +15,11 @@ namespace hm
 	using IO::FileStream;
 	using IO::JsonReader;
 	using IO::JsonWriter;
+	using Util::String;
+	using Util::StringAtom;
+	using Math::float4;
+	using Math::point;
+	using Math::quaternion;
 
 	class ISerializable {
 		friend class Serializer;
@@ -43,7 +48,7 @@ namespace hm
 		void AddNode(const char* name);
 		void AddArrayNode(const char* name);
 		void EndNode();
-		Util::String GetName();
+		String GetName();
 		bool Next();
 		bool Child();
 		bool Parent();
@@ -51,31 +56,31 @@ namespace hm
 
 
 		template <typename T>
-		void AddData(Util::String key, const T& value) {
+		void AddData(String key, const T& value) {
 			if (m_Writing) {
 				m_Writer->Add<T>(value, key);
 			}
 		};
 
 		template <>
-		void AddData(Util::String key, const Util::StringAtom& value) {
-			Util::String s(value.AsString());
+		void AddData(String key, const StringAtom& value) {
+			String s(value.AsString());
 			if (m_Writing) {
 				m_Writer->Add(s, key);
 			}
 		};
 
 		template <>
-		void AddData(Util::String key, const Math::point& value) {
-			Math::float4 f(value);
+		void AddData(String key, const point& value) {
+			float4 f(value);
 			if (m_Writing) {
 				m_Writer->Add(f, key);
 			}
 		};
 
 		template <>
-		void AddData(Util::String key, const Math::quaternion& value) {
-			Math::float4 f(value.x(), value.y(), value.z(), value.w());
+		void AddData(Util::String key, const quaternion& value) {
+			float4 f(value.x(), value.y(), value.z(), value.w());
 			if (m_Writing) {
 				m_Writer->Add(f, key);
 			}
@@ -89,28 +94,28 @@ namespace hm
 		};
 
 		template <>
-		void GetData(const char* key, Util::StringAtom& target) {
+		void GetData(const char* key, StringAtom& target) {
 			if (m_Reading) {
 				target = m_Reader->GetString(key);
 			}
 		};
 
 		template <>
-		void GetData(const char* key, Math::float4& target) {
+		void GetData(const char* key, float4& target) {
 			if (m_Reading) {
 				target = m_Reader->GetFloat4(key);
 			}
 		};
 
 		template <>
-		void GetData(const char* key, Math::point& target) {
+		void GetData(const char* key, point& target) {
 			if (m_Reading) {
 				target = m_Reader->GetFloat4(key);
 			}
 		};
 
 		template <>
-		void GetData(const char* key, Math::quaternion& target) {
+		void GetData(const char* key, quaternion& target) {
 			if (m_Reading) {
 				target.set(m_Reader->GetFloat4(key));
 			}

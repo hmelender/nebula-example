@@ -3,8 +3,10 @@
 #include "stdneb.h"
 #include "math/point.h"
 #include "util/stringatom.h"
+
 #include "message.h"
 #include "serializer.h"
+
 
 namespace hm
 {
@@ -23,7 +25,6 @@ namespace hm
 		EntityManager();
 	public:
 		static EntityManager& GetInstance();
-		static float frameDelta;
 
 		Entity& CreateEntity(const StringAtom& name);
 		Entity& CreateEntity(const StringAtom& name, const StringAtom& uri, const StringAtom& tag);
@@ -36,6 +37,7 @@ namespace hm
 
 		void SaveSceneState(const char* file);
 		void LoadSceneState(const char* file);
+		void Load(const char* file);
 		void Init();
 		void Update();
 		void Shutdown();

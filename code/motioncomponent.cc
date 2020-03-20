@@ -1,3 +1,4 @@
+#include "game.h"
 #include "entitymanager.h"
 #include "motioncomponent.h"
 #include "transformcomponent.h"
@@ -29,15 +30,15 @@ void hm::MotionComponent::Init()
 void hm::MotionComponent::Update()
 {
 	if (m_InMotion && m_Transform != nullptr) {
-		m_Transform->Translate(m_Velocity * EntityManager::frameDelta);
+		m_Transform->Translate(m_Velocity * hm::Game::deltaTime);
 	}
 
 	if (m_InRotation && m_Transform != nullptr) {
 
 		Math::quaternion q = Math::quaternion::rotationyawpitchroll(
-			m_AngularVelocity[1] * EntityManager::frameDelta,
-			m_AngularVelocity[0] * EntityManager::frameDelta,
-			m_AngularVelocity[2] * EntityManager::frameDelta
+			m_AngularVelocity[1] * hm::Game::deltaTime,
+			m_AngularVelocity[0] * hm::Game::deltaTime,
+			m_AngularVelocity[2] * hm::Game::deltaTime
 		);
 		m_Transform->Rotate(q);
 	}
