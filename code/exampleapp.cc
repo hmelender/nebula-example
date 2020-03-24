@@ -263,7 +263,7 @@ ExampleApplication::Run()
 
 	hm::Game game;
 
-	game.Start("code/script.py");
+	game.Start("code/script.py", *inputServer->GetDefaultKeyboard().get());
     
     while (run && !inputServer->IsQuitRequested())
     {   
@@ -283,12 +283,11 @@ ExampleApplication::Run()
         this->resMgr->Update(this->frameIndex);
 
 		this->gfxServer->BeginFrame();
-        
 		// put game code which doesn't need visibility data or animation here
-
 		game.EarlyUpdate(this->gfxServer->GetFrameTime());
 
         this->gfxServer->BeforeViews();
+
         
 		this->RenderUI();             
 
@@ -296,7 +295,6 @@ ExampleApplication::Run()
         {
             this->gfxServer->RenderDebug(0);
         }
-        
         // put game code which need visibility data here
 
         this->gfxServer->RenderViews();

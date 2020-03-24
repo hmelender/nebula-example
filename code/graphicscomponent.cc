@@ -23,7 +23,9 @@ void hm::GraphicsComponent::Init()
 		return;
 	
 	m_GraphicsId = Graphics::CreateEntity();
-	Graphics::RegisterEntity<ModelContext, ObservableContext>(m_GraphicsId);
+	ModelContext::RegisterEntity(m_GraphicsId);
+	ObservableContext::RegisterEntity(m_GraphicsId);
+
 	m_Initialized = true;
 }
 
@@ -33,7 +35,8 @@ void hm::GraphicsComponent::Update()
 
 void hm::GraphicsComponent::Shutdown()
 {
-	Graphics::DeregisterEntity<ModelContext, ObservableContext>(m_GraphicsId);
+	Visibility::ObservableContext::DeregisterEntity(m_GraphicsId);
+	Models::ModelContext::DeregisterEntity(m_GraphicsId);
 	Graphics::DestroyEntity(m_GraphicsId);
 }
 
@@ -53,6 +56,8 @@ void hm::GraphicsComponent::LoadModel(const StringAtom& uri, const StringAtom& t
 
 	m_ModelUri = uri;
 	m_ModelTag = tag;
+
+
 	ModelContext::Setup(m_GraphicsId, m_ModelUri, m_ModelTag);
 	ModelContext::SetTransform(m_GraphicsId, t.m_Matrix);
 	ObservableContext::Setup(m_GraphicsId, VisibilityEntityType::Model);
@@ -81,4 +86,5 @@ void hm::GraphicsComponent::Deserialize(Serializer& reader)
 	reader.GetData("model_uri", uri);
 	reader.GetData("model_tag", tag);
 	LoadModel(uri, tag);
+
 }

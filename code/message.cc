@@ -79,6 +79,16 @@ void hm::MessageDispatcher::DispatchMessages()
 	
 }
 
+void hm::MessageDispatcher::ClearMessageHandlers()
+{
+	m_Handlers.Clear();
+}
+
+void hm::MessageDispatcher::ClearMessageQueue()
+{
+	m_MessageQueue.Clear();
+}
+
 hm::Message::Message() : m_MessageType(hm::Message::Type::NONE), m_Recipient(nullptr)
 {}
 

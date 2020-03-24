@@ -17,6 +17,8 @@ namespace hm
 	protected:
 		MessageDispatcher();
 		void DispatchMessages();
+		void ClearMessageHandlers();
+		void ClearMessageQueue();
 
 	private:
 		static MessageDispatcher* s_Instance;

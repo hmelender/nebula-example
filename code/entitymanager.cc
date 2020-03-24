@@ -4,7 +4,7 @@
 #include "charactercomponent.h"
 #include "lightcomponent.h"
 
-hm::EntityManager::EntityManager() : m_Initialized(false)
+hm::EntityManager::EntityManager() : m_Initialized(false), m_LoadState(false)
 {
 
 }
@@ -136,22 +136,7 @@ void hm::EntityManager::SaveSceneState(const char* file)
 
 void hm::EntityManager::LoadSceneState(const char* file)
 {
-	Shutdown();
-
-	m_Serializer.BeginRead(file);
-	m_Serializer.Child();
-	m_Serializer.Child();
-
-	do {
-		Util::String name = m_Serializer.GetName();
-		m_Serializer.GetData("name", name);
-		Entity& e = CreateEntity(name);
-		e.Deserialize(m_Serializer);
-
-	} while (m_Serializer.Next());
-
-	m_Serializer.End();
-
+	Load(file);
 }
 
 void hm::EntityManager::Load(const char* file)
@@ -165,6 +150,11 @@ void hm::EntityManager::Load(const char* file)
 		m_Serializer.GetData("name", name);
 
 		if (!m_EntityTable.Contains(name)) {
+			Entity& e = CreateEntity(name);
+			e.Deserialize(m_Serializer);
+		}
+		else {
+			name.Append("1");
 			Entity& e = CreateEntity(name);
 			e.Deserialize(m_Serializer);
 		}
@@ -198,4 +188,6 @@ void hm::EntityManager::Shutdown()
 	}
 	m_Entities.Clear();
 	m_EntityTable.Clear();
+	ClearMessageQueue();
+	ClearMessageHandlers();
 }

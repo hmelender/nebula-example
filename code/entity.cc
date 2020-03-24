@@ -40,9 +40,15 @@ void hm::Entity::Update()
 
 void hm::Entity::Shutdown()
 {
-	for (Component* c : m_Components) {
-		c->Shutdown();
+	int len = m_Components.Size();
+	if (len > 0) {
+		for (int i = len - 1; i >= 0; i--) {
+			m_Components[i]->Shutdown();
+		}
 	}
+
+	m_Variables.Clear();
+	m_Components.Clear();
 }
 
 hm::Component& hm::Entity::CreateComponent(hm::Component::Type type)

@@ -19,6 +19,8 @@ namespace hm
 		Array<Entity*> m_Entities;
 		HashTable<StringAtom, IndexT> m_EntityTable;
 		bool m_Initialized;
+		bool m_LoadState;
+		Util::String m_LoadFile;
 
 		Serializer m_Serializer;
 	protected:
