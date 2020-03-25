@@ -36,8 +36,8 @@ void hm::GraphicsComponent::Update()
 void hm::GraphicsComponent::Shutdown()
 {
 	Visibility::ObservableContext::DeregisterEntity(m_GraphicsId);
-	Models::ModelContext::DeregisterEntity(m_GraphicsId);
-	Graphics::DestroyEntity(m_GraphicsId);
+	//Models::ModelContext::DeregisterEntity(m_GraphicsId);
+	//Graphics::DestroyEntity(m_GraphicsId);
 }
 
 void hm::GraphicsComponent::ReceiveMessage(const Message& message)

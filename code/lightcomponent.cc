@@ -34,7 +34,7 @@ void hm::LightComponent::Update()
 void hm::LightComponent::Shutdown()
 {
 	Lighting::LightContext::DeregisterEntity(m_LightId);
-	Graphics::DestroyEntity(m_LightId);
+	// Graphics::DestroyEntity(m_LightId);
 }
 
 void hm::LightComponent::ReceiveMessage(const Message& message)
